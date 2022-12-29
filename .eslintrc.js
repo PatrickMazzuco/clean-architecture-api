@@ -16,6 +16,7 @@ module.exports = {
     '@typescript-eslint/semi': ['error', 'always'],
     '@typescript-eslint/strict-boolean-expressions': 0,
     '@typescript-eslint/consistent-type-definitions': 0,
-    '@typescript-eslint/member-delimiter-style': 0
+    '@typescript-eslint/member-delimiter-style': 0,
+    '@typescript-eslint/space-before-function-paren': 0
   }
 };
