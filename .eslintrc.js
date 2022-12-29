@@ -1,14 +1,22 @@
 module.exports = {
+  root: true,
   env: {
-    browser: true,
-    es2021: true
+    node: true,
+    jest: true
   },
-  extends: 'standard-with-typescript',
+  plugins: ['eslint-plugin-import-helpers', 'prettier'],
+  extends: [
+    'standard-with-typescript',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
+    'plugin:prettier/recommended'
+  ],
   overrides: [],
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: './tsconfig.json'
+    project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
+    sourceType: 'module'
   },
   rules: {
     'space-before-function-paren': 0,
@@ -19,6 +27,32 @@ module.exports = {
     '@typescript-eslint/member-delimiter-style': 0,
     '@typescript-eslint/space-before-function-paren': 0,
     '@typescript-eslint/no-extraneous-class': 0,
-    '@typescript-eslint/no-namespace': 0
+    '@typescript-eslint/no-namespace': 0,
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      {
+        ts: 'never'
+      }
+    ],
+    'import-helpers/order-imports': [
+      'warn',
+      {
+        newlinesBetween: 'always',
+        groups: [
+          ['module', '/^@(?!/)/'],
+          ['/^@//', 'parent', 'sibling', 'index']
+        ],
+        alphabetize: {
+          order: 'asc',
+          ignoreCase: true
+        }
+      }
+    ]
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {}
+    }
   }
 };
