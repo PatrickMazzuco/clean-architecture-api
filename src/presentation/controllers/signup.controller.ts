@@ -1,4 +1,3 @@
-import { InternalServerError } from '../errors/internal-server.error';
 import { InvalidParamError } from '../errors/invalid-param.error';
 import { MissingParamError } from '../errors/missing-param.error';
 import { HttpErrorFactory } from '../helpers/http.helper';
@@ -30,10 +29,7 @@ export class SignUpController implements Controller {
         body: 'ok'
       };
     } catch (error) {
-      return {
-        statusCode: 500,
-        body: new InternalServerError()
-      };
+      return HttpErrorFactory.InternalServerError();
     }
   }
 }
