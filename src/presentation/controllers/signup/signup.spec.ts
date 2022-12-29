@@ -1,7 +1,10 @@
-import { AddAccount } from '../../domain/usecases/add-account.usecase';
-import { InternalServerError, InvalidParamError, MissingParamError } from '../errors';
-import { EmailValidator } from '../protocols';
+import {
+  InternalServerError,
+  InvalidParamError,
+  MissingParamError
+} from '../../errors';
 import { SignUpController } from './signup.controller';
+import { AddAccount, EmailValidator } from './signup.protocols';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -107,7 +110,9 @@ describe('SignUp Controller', () => {
 
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'));
+    expect(httpResponse.body).toEqual(
+      new MissingParamError('passwordConfirmation')
+    );
   });
 
   it('should return status 400 if invalid email is provided', () => {
@@ -143,7 +148,9 @@ describe('SignUp Controller', () => {
 
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'));
+    expect(httpResponse.body).toEqual(
+      new InvalidParamError('passwordConfirmation')
+    );
   });
 
   it('should call emailValidator with correct email', () => {

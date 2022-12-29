@@ -1,4 +1,4 @@
-import { Account } from './entities';
+import { Account } from '../entities';
 
 type Input = {
   name: string;
