@@ -1,6 +1,6 @@
 import { AddAccount } from '../../../domain/usecases/add-account.usecase';
 import { InvalidParamError, MissingParamError } from '../../errors';
-import { HttpErrorFactory } from '../../helpers/http.helper';
+import { HttpResponseFactory } from '../../helpers/http.helper';
 import {
   Controller,
   EmailValidator,
@@ -25,7 +25,9 @@ export class SignUpController implements Controller {
 
       for (const field of requiredFields) {
         if (!request.body[field]) {
-          return HttpErrorFactory.BadRequest(new MissingParamError(field));
+          return HttpResponseFactory.BadRequestError(
+            new MissingParamError(field)
+          );
         }
       }
 
@@ -33,28 +35,27 @@ export class SignUpController implements Controller {
 
       const isPasswordConfirmationValid = password === passwordConfirmation;
       if (!isPasswordConfirmationValid) {
-        return HttpErrorFactory.BadRequest(
+        return HttpResponseFactory.BadRequestError(
           new InvalidParamError('passwordConfirmation')
         );
       }
 
       const isEmailValid = this.emailValidator.isValid(email);
       if (!isEmailValid) {
-        return HttpErrorFactory.BadRequest(new InvalidParamError('email'));
+        return HttpResponseFactory.BadRequestError(
+          new InvalidParamError('email')
+        );
       }
 
-      const createdAccount = this.addAccount.execute({
+      const account = this.addAccount.execute({
         name,
         email,
         password
       });
 
-      return {
-        statusCode: 200,
-        body: createdAccount
-      };
+      return HttpResponseFactory.Ok(account);
     } catch (error) {
-      return HttpErrorFactory.InternalServerError();
+      return HttpResponseFactory.InternalServerError();
     }
   }
 }
