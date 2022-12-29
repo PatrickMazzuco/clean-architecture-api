@@ -14,7 +14,7 @@ export class SignUpController implements Controller {
     private readonly addAccount: AddAccount
   ) {}
 
-  handle(request: HttpRequest): HttpResponse {
+  async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
       const requiredFields = [
         'name',
@@ -47,7 +47,7 @@ export class SignUpController implements Controller {
         );
       }
 
-      const account = this.addAccount.execute({
+      const account = await this.addAccount.execute({
         name,
         email,
         password
