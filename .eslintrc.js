@@ -12,6 +12,7 @@ module.exports = {
   },
   rules: {
     'space-before-function-paren': 0,
-    semi: ['error', 'always']
+    semi: ['error', 'always'],
+    '@typescript-eslint/semi': ['error', 'always']
   }
 };
