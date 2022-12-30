@@ -100,4 +100,20 @@ describe('AddAccount Usecase', () => {
       password: 'hashed_password'
     });
   });
+
+  it('should throw if AddAccountRepository throws', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    jest
+      .spyOn(addAccountRepositoryStub, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    const accountData: AddAccount.Params = {
+      name: 'any_name',
+      email: 'valid_email@email.com',
+      password: 'any_password'
+    };
+
+    const promise = sut.execute(accountData);
+    await expect(promise).rejects.toThrow();
+  });
 });
