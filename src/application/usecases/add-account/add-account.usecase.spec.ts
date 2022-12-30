@@ -116,4 +116,24 @@ describe('AddAccount Usecase', () => {
     const promise = sut.execute(accountData);
     await expect(promise).rejects.toThrow();
   });
+
+  it('should return and account os success', async () => {
+    const { sut } = makeSut();
+    const accountData: AddAccount.Params = {
+      name: 'any_name',
+      email: 'valid_email@email.com',
+      password: 'any_password'
+    };
+
+    const account = await sut.execute(accountData);
+
+    expect(account).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        name: accountData.name,
+        email: accountData.email,
+        password: 'hashed_password'
+      })
+    );
+  });
 });
