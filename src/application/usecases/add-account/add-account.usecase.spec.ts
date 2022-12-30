@@ -1,4 +1,8 @@
-import { AddAccount, Encrypter } from './add-account.protocols';
+import {
+  AddAccount,
+  AddAccountRepository,
+  Encrypter
+} from './add-account.protocols';
 import { AddAccountUsecase } from './add-account.usecase';
 
 const makeEncrypter = (): Encrypter => {
@@ -12,18 +16,41 @@ const makeEncrypter = (): Encrypter => {
   return encrypterStub;
 };
 
+const makeAddAccountRepository = (): AddAccountRepository => {
+  class AddAccountRepositoryStub implements AddAccountRepository {
+    async execute(
+      accountData: AddAccountRepository.Params
+    ): Promise<AddAccountRepository.Result> {
+      const fakeAccount = {
+        id: 'any_id',
+        name: accountData.name,
+        email: accountData.email,
+        password: 'hashed_password'
+      };
+
+      return await new Promise((resolve) => resolve(fakeAccount));
+    }
+  }
+
+  const addAccountRepositoryStub = new AddAccountRepositoryStub();
+  return addAccountRepositoryStub;
+};
+
 type SutTypes = {
   sut: AddAccountUsecase;
   encrypterStub: Encrypter;
+  addAccountRepositoryStub: AddAccountRepository;
 };
 
 const makeSut = (): SutTypes => {
   const encrypterStub = makeEncrypter();
-  const sut = new AddAccountUsecase(encrypterStub);
+  const addAccountRepositoryStub = makeAddAccountRepository();
+  const sut = new AddAccountUsecase(encrypterStub, addAccountRepositoryStub);
 
   return {
     sut,
-    encrypterStub
+    encrypterStub,
+    addAccountRepositoryStub
   };
 };
 
@@ -54,5 +81,23 @@ describe('AddAccount Usecase', () => {
 
     const promise = sut.execute(accountData);
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should call AddAccountRepository with correct values', async () => {
+    const { sut, addAccountRepositoryStub } = makeSut();
+    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'execute');
+
+    const accountData: AddAccount.Params = {
+      name: 'any_name',
+      email: 'valid_email@email.com',
+      password: 'any_password'
+    };
+
+    await sut.execute(accountData);
+    expect(addAccountSpy).toBeCalledWith({
+      name: accountData.name,
+      email: accountData.email,
+      password: 'hashed_password'
+    });
   });
 });
