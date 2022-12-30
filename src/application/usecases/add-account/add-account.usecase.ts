@@ -1,6 +1,4 @@
-import { Encrypter } from 'src/application/protocols/encrypter.service';
-
-import { AddAccount } from '@/domain/usecases/add-account.usecase';
+import { AddAccount, Encrypter } from './add-account.protocols';
 
 export class AddAccountUsecase implements AddAccount {
   constructor(private readonly encrypter: Encrypter) {}

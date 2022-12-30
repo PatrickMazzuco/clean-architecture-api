@@ -1,6 +1,5 @@
+import { AddAccount, Encrypter } from './add-account.protocols';
 import { AddAccountUsecase } from './add-account.usecase';
-import { Encrypter } from '@/application/protocols/encrypter.service';
-import { AddAccount } from '@/domain/usecases/add-account.usecase';
 
 const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
