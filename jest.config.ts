@@ -4,8 +4,15 @@ import { pathsToModuleNameMapper } from 'ts-jest';
 import { compilerOptions } from './tsconfig.json';
 
 const config: Config = {
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  collectCoverageFrom: [
+    '<rootDir>/src/**/*.ts',
+    '!<rootDir>/src/**/index.ts',
+    '!<rootDir>/src/**/protocols/**',
+    '!<rootDir>/src/**/*.protocols.ts',
+    '!<rootDir>/src/domain/usecases/**/*.ts'
+  ],
   coverageDirectory: 'coverage',
+  coverageProvider: 'babel',
   coverageReporters: ['json', 'text', 'lcov', 'clover', 'text-summary'],
   roots: ['<rootDir>/src'],
   preset: 'ts-jest',

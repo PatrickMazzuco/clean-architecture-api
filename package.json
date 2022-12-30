@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
+    "test": "jest --passWithNoTests --silent --runInBand --no-cache",
+    "test:verbose": "jest --passWithNoTests --runInBand --no-cache",
+    "test:watch": "npm test -- --watch",
+    "test:cov": "npm test -- --coverage",
+    "test:unit": "npm test -- --watch -c jest-unit.config.ts",
+    "test:integration": "npm test -- --watch -c jest-integration.config.ts",
+    "test:staged": "npm test -- --findRelatedTests",
     "prepare": "husky install"
   },
   "keywords": [],
