@@ -117,7 +117,7 @@ describe('AddAccount Usecase', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it('should return and account os success', async () => {
+  it('should return an account on success', async () => {
     const { sut } = makeSut();
     const accountData: AddAccount.Params = {
       name: 'any_name',
