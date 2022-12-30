@@ -28,6 +28,7 @@ module.exports = {
     '@typescript-eslint/space-before-function-paren': 0,
     '@typescript-eslint/no-extraneous-class': 0,
     '@typescript-eslint/no-namespace': 0,
+    'import/no-named-as-default-member': 0,
     'import/extensions': [
       'error',
       'ignorePackages',

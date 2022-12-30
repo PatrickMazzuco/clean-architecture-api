@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@types/jest': ^29.2.4
   '@types/node': ^18.11.18
+  '@types/validator': ^13.7.10
   '@typescript-eslint/eslint-plugin': ^5.0.0
   eslint: ^8.0.1
   eslint-config-prettier: ^8.5.0
@@ -22,10 +23,15 @@ specifiers:
   ts-node: ^10.9.1
   tsconfig-paths: ^4.1.1
   typescript: '*'
+  validator: ^13.7.0
+
+dependencies:
+  validator: 13.7.0
 
 devDependencies:
   '@types/jest': 29.2.4
   '@types/node': 18.11.18
+  '@types/validator': 13.7.10
   '@typescript-eslint/eslint-plugin': 5.47.1_txmweb6yn7coi7nfrp22gpyqmy
   eslint: 8.30.0
   eslint-config-prettier: 8.5.0_eslint@8.30.0
@@ -847,6 +853,10 @@ packages:
 
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
+    dev: true
+
+  /@types/validator/13.7.10:
+    resolution: {integrity: sha512-t1yxFAR2n0+VO6hd/FJ9F2uezAZVWHLmpmlJzm1eX03+H7+HsuTAp7L8QJs+2pQCfWkP1+EXsGK9Z9v7o/qPVQ==}
     dev: true
 
   /@types/yargs-parser/21.0.0:
@@ -3984,6 +3994,11 @@ packages:
       '@types/istanbul-lib-coverage': 2.0.4
       convert-source-map: 1.9.0
     dev: true
+
+  /validator/13.7.0:
+    resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
+    engines: {node: '>= 0.10'}
+    dev: false
 
   /walker/1.0.8:
     resolution: {integrity: sha512-ts/8E8l5b7kY0vlWLewOkDXMmPdLcVV4GmOQLyxuSswIJsweeFZtAsMF7k1Nszz+TYBQrlYRmzOnr398y1JemQ==}
