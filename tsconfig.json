@@ -9,6 +9,9 @@
       "@/domain/*": [
         "src/domain/*"
       ],
+      "@/application/*": [
+        "src/application/*"
+      ],
       "@/presentation/*": [
         "src/presentation/*"
       ]
