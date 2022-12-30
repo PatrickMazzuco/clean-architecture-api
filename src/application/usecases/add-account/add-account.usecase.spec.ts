@@ -2,12 +2,7 @@ import { AddAccountUsecase } from './add-account.usecase';
 import { Encrypter } from '@/application/protocols/encrypter.service';
 import { AddAccount } from '@/domain/usecases/add-account.usecase';
 
-type SutTypes = {
-  sut: AddAccountUsecase;
-  encrypterStub: Encrypter;
-};
-
-const makeSut = (): SutTypes => {
+const makeEncrypter = (): Encrypter => {
   class EncrypterStub implements Encrypter {
     async encrypt(value: string): Promise<string> {
       return await new Promise((resolve) => resolve('hashed_password'));
@@ -15,6 +10,16 @@ const makeSut = (): SutTypes => {
   }
 
   const encrypterStub = new EncrypterStub();
+  return encrypterStub;
+};
+
+type SutTypes = {
+  sut: AddAccountUsecase;
+  encrypterStub: Encrypter;
+};
+
+const makeSut = (): SutTypes => {
+  const encrypterStub = makeEncrypter();
   const sut = new AddAccountUsecase(encrypterStub);
 
   return {
