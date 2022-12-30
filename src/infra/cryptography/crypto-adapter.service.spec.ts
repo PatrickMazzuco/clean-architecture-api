@@ -8,15 +8,19 @@ jest.mock('node:crypto', () => ({
   pbkdf2Sync: jest.fn().mockReturnValue('any_hash')
 }));
 
+const config: CryptoAdapter.Params = {
+  iterations: 10000,
+  keyLength: 64,
+  digest: 'sha512'
+};
+
+const makeSut = (): CryptoAdapter => {
+  return new CryptoAdapter(config);
+};
+
 describe('Crypto Adapter', () => {
   it('should call node:crypto with correct value', async () => {
-    const config: CryptoAdapter.Params = {
-      iterations: 10000,
-      keyLength: 64,
-      digest: 'sha512'
-    };
-
-    const sut = new CryptoAdapter(config);
+    const sut = makeSut();
     const valueToEncrypt = 'any_value';
 
     const encryptSpy = jest.spyOn(crypto, 'pbkdf2Sync');
@@ -33,13 +37,7 @@ describe('Crypto Adapter', () => {
   });
 
   it('should return the hashed password on success', async () => {
-    const config: CryptoAdapter.Params = {
-      iterations: 10000,
-      keyLength: 64,
-      digest: 'sha512'
-    };
-
-    const sut = new CryptoAdapter(config);
+    const sut = makeSut();
     const valueToEncrypt = 'any_value';
 
     const hashedPassword = await sut.encrypt(valueToEncrypt);
