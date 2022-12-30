@@ -1,5 +1,4 @@
 import crypto from 'node:crypto';
-import { promisify } from 'node:util';
 
 import { Encrypter } from '@/application/protocols/encrypter.service';
 
@@ -18,9 +17,8 @@ export class CryptoAdapter implements Encrypter {
   async encrypt(value: Encrypter.Params): Promise<Encrypter.Result> {
     const { iterations, keyLength, digest } = this.config;
 
-    const pbkdf2 = promisify(crypto.pbkdf2);
     const salt = crypto.randomBytes(16).toString('hex');
-    const hash = await pbkdf2(value, salt, iterations, keyLength, digest);
+    const hash = crypto.pbkdf2Sync(value, salt, iterations, keyLength, digest);
 
     return hash.toString('hex');
   }
