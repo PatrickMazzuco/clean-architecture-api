@@ -15,7 +15,10 @@ const config: Config = {
   coverageProvider: 'babel',
   coverageReporters: ['json', 'text', 'lcov', 'clover', 'text-summary'],
   roots: ['<rootDir>/src'],
-  preset: 'ts-jest',
+  preset: '@shelf/jest-mongodb',
+  transform: {
+    '.+\\.ts$': 'ts-jest'
+  },
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>'
   })
