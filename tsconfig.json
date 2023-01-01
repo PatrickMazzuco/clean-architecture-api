@@ -17,6 +17,9 @@
       ],
       "@/infra/*": [
         "src/infra/*"
+      ],
+      "@/main/*": [
+        "src/main/*"
       ]
     },
     "esModuleInterop": true,
