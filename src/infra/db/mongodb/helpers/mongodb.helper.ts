@@ -26,6 +26,7 @@ export const MongoHelper: MongoHelperType = {
   },
 
   getCollection: (name: string): Collection => {
-    return MongoHelper.client!.db().collection(name);
+    if (!MongoHelper.client) throw new Error('MongoDB client is not connected');
+    return MongoHelper.client.db().collection(name);
   }
 };
