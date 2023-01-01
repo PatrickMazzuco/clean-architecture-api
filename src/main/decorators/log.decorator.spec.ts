@@ -30,7 +30,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('LogController Decorator', () => {
-  it('should call incoming controller handle', async () => {
+  it('should call incoming controller handle with correct values', async () => {
     const { sut, controllerStub } = makeSut();
     const httpRequest = {
       body: {
@@ -43,5 +43,25 @@ describe('LogController Decorator', () => {
     await sut.handle(httpRequest);
 
     expect(controllerStubSpy).toBeCalledWith(httpRequest);
+  });
+
+  it('should return the correct result from the incoming controller', async () => {
+    const { sut } = makeSut();
+    const httpRequest = {
+      body: {
+        name: 'valid_name',
+        email: 'valid_email@email.com'
+      }
+    };
+
+    const result = await sut.handle(httpRequest);
+
+    expect(result).toEqual({
+      statusCode: 200,
+      body: {
+        name: httpRequest.body.name,
+        email: httpRequest.body.email
+      }
+    });
   });
 });
