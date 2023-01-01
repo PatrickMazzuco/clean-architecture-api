@@ -55,7 +55,7 @@ export class SignUpController implements Controller {
 
       return HttpResponseFactory.Ok(account);
     } catch (error) {
-      return HttpResponseFactory.InternalServerError();
+      return HttpResponseFactory.InternalServerError(error as Error);
     }
   }
 }

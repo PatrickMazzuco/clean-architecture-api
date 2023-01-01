@@ -9,10 +9,10 @@ export class HttpResponseFactory {
     };
   }
 
-  static InternalServerError(): HttpResponse {
+  static InternalServerError(error: Error): HttpResponse {
     return {
       statusCode: 500,
-      body: new InternalServerError()
+      body: new InternalServerError(error.stack)
     };
   }
 
