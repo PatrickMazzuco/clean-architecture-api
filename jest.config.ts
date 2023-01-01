@@ -9,7 +9,8 @@ const config: Config = {
     '!<rootDir>/src/**/index.ts',
     '!<rootDir>/src/**/protocols/**',
     '!<rootDir>/src/**/*.protocols.ts',
-    '!<rootDir>/src/domain/usecases/**/*.ts'
+    '!<rootDir>/src/domain/usecases/**/*.ts',
+    '!<rootDir>/src/main/**'
   ],
   coverageDirectory: 'coverage',
   coverageProvider: 'babel',
