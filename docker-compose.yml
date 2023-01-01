@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  mongodb:
+    image: mongo:5
+    container_name: mongodb
+    volumes:
+      - /mongodb/data:/data/db
+    ports:
+      - "${MONGODB_PORT}:27017"
+    environment:
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_DATABASE=${MONGODB_DATABASE}
+    env_file:
+      - .env

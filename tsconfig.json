@@ -4,7 +4,7 @@
     "module": "commonjs",
     "allowJs": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "@/domain/*": [
         "src/domain/*"
@@ -27,5 +27,12 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true
-  }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "sucrase-node src/main/server.ts",
+    "start": "ts-node -r tsconfig-paths/register --transpiler sucrase/ts-node-plugin src/main/server.ts",
     "test": "jest --passWithNoTests --silent --runInBand --no-cache",
     "test:verbose": "jest --passWithNoTests --runInBand --no-cache",
     "test:watch": "npm test -- --watch",
@@ -50,6 +50,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "fast-glob": "^3.2.12",
     "mongodb": "^4.13.0",
