@@ -1,4 +1,5 @@
 import { MongoHelper } from '../helpers/mongodb.helper';
+import { AccountMapper } from './account.mapper';
 import { AddAccountRepository } from '@/application/protocols/add-account.repository';
 
 export class AccountMongoRepository implements AddAccountRepository {
@@ -9,11 +10,6 @@ export class AccountMongoRepository implements AddAccountRepository {
     const result = await accountCollection.insertOne(accountData);
     const id = result.insertedId;
 
-    return {
-      id: id.toString(),
-      name: accountData.name,
-      email: accountData.email,
-      password: accountData.password
-    };
+    return AccountMapper.toEntity({ _id: id, ...accountData });
   }
 }
