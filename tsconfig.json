@@ -20,6 +20,9 @@
       ],
       "@/main/*": [
         "src/main/*"
+      ],
+      "@/utils/*": [
+        "src/utils/*"
       ]
     },
     "esModuleInterop": true,
