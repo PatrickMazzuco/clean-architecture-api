@@ -17,7 +17,7 @@ export class AddAccountUsecase implements AddAccount {
   }: AddAccount.Params): Promise<AddAccount.Result> {
     const hashedPassword = await this.encrypter.encrypt(password);
 
-    return await this.addAccountRepository.execute({
+    return await this.addAccountRepository.add({
       name,
       email,
       password: hashedPassword

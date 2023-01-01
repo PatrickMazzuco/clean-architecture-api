@@ -18,7 +18,7 @@ const makeEncrypter = (): Encrypter => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    async execute(
+    async add(
       accountData: AddAccountRepository.Params
     ): Promise<AddAccountRepository.Result> {
       const fakeAccount = {
@@ -85,7 +85,7 @@ describe('AddAccount Usecase', () => {
 
   it('should call AddAccountRepository with correct values', async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
-    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'execute');
+    const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add');
 
     const accountData: AddAccount.Params = {
       name: 'any_name',
@@ -104,7 +104,7 @@ describe('AddAccount Usecase', () => {
   it('should throw if AddAccountRepository throws', async () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     jest
-      .spyOn(addAccountRepositoryStub, 'execute')
+      .spyOn(addAccountRepositoryStub, 'add')
       .mockRejectedValueOnce(new Error());
 
     const accountData: AddAccount.Params = {

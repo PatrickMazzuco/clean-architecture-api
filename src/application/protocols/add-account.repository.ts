@@ -14,7 +14,7 @@ export namespace AddAccountRepository {
 }
 
 export abstract class AddAccountRepository {
-  abstract execute(
+  abstract add(
     params: AddAccountRepository.Params
   ): Promise<AddAccountRepository.Result>;
 }
