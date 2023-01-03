@@ -29,6 +29,7 @@ module.exports = {
     '@typescript-eslint/no-extraneous-class': 0,
     '@typescript-eslint/no-namespace': 0,
     '@typescript-eslint/no-misused-promises': 0,
+    '@typescript-eslint/no-invalid-void-type': 0,
     'import/no-named-as-default-member': 0,
     'import/extensions': [
       'error',
