@@ -20,4 +20,18 @@ describe('Login Controller', () => {
       HttpResponseFactory.BadRequestError(new MissingParamError('email'))
     );
   });
+
+  it('should return 400 if no password is provided', async () => {
+    const sut = makeSut();
+    const httpRequest = {
+      body: {
+        email: 'any_email@email.com'
+      }
+    };
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.BadRequestError(new MissingParamError('password'))
+    );
+  });
 });
