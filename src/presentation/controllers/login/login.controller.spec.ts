@@ -78,4 +78,18 @@ describe('Login Controller', () => {
       HttpResponseFactory.BadRequestError(new InvalidParamError('email'))
     );
   });
+
+  it('should return 500 if EmailValidator throws and error', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
+    );
+  });
 });
