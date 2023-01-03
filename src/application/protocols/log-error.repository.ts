@@ -10,7 +10,7 @@ export namespace LogErrorRepository {
 }
 
 export abstract class LogErrorRepository {
-  abstract log(
+  abstract logError(
     params: LogErrorRepository.Params
   ): Promise<LogErrorRepository.Result>;
 }

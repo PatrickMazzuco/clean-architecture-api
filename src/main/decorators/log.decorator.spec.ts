@@ -5,7 +5,7 @@ import { Controller } from '@/presentation/protocols';
 
 const makeLogErrorRepository = (): LogErrorRepository => {
   class LogErrorRepositoryStub implements LogErrorRepository {
-    async log(
+    async logError(
       stack: LogErrorRepository.Params
     ): Promise<LogErrorRepository.Result> {
       await Promise.resolve();
@@ -87,7 +87,7 @@ describe('LogController Decorator', () => {
     const error = new Error();
     error.stack = 'any_stack';
     const errorResponse = HttpResponseFactory.InternalServerError(error);
-    const logSpy = jest.spyOn(logErrorRepository, 'log');
+    const logSpy = jest.spyOn(logErrorRepository, 'logError');
 
     jest.spyOn(controllerStub, 'handle').mockResolvedValueOnce(errorResponse);
 
