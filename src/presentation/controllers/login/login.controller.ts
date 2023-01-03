@@ -6,32 +6,38 @@ export class LoginController implements Controller {
   constructor(private readonly emailValidator: EmailValidator) {}
 
   async handle(request: Controller.Params): Promise<Controller.Result> {
-    return await new Promise((resolve) => {
-      if (!request.body.email) {
+    try {
+      return await new Promise((resolve) => {
+        if (!request.body.email) {
+          resolve(
+            HttpResponseFactory.BadRequestError(new MissingParamError('email'))
+          );
+        }
+
+        if (!request.body.password) {
+          resolve(
+            HttpResponseFactory.BadRequestError(
+              new MissingParamError('password')
+            )
+          );
+        }
+
+        const isEmailValid = this.emailValidator.isValid(request.body.email);
+
+        if (!isEmailValid) {
+          resolve(
+            HttpResponseFactory.BadRequestError(new InvalidParamError('email'))
+          );
+        }
+
         resolve(
-          HttpResponseFactory.BadRequestError(new MissingParamError('email'))
+          HttpResponseFactory.Ok({
+            message: 'Login success'
+          })
         );
-      }
-
-      if (!request.body.password) {
-        resolve(
-          HttpResponseFactory.BadRequestError(new MissingParamError('password'))
-        );
-      }
-
-      const isEmailValid = this.emailValidator.isValid(request.body.email);
-
-      if (!isEmailValid) {
-        resolve(
-          HttpResponseFactory.BadRequestError(new InvalidParamError('email'))
-        );
-      }
-
-      resolve(
-        HttpResponseFactory.Ok({
-          message: 'Login success'
-        })
-      );
-    });
+      });
+    } catch (error) {
+      return HttpResponseFactory.InternalServerError(error as Error);
+    }
   }
 }
