@@ -6,20 +6,14 @@ import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/ac
 import { LogMongoRepository } from '@/infra/db/mongodb/log-repository/log.repository';
 import { SignUpController } from '@/presentation/controllers/signup/signup.controller';
 import { Controller } from '@/presentation/protocols';
-import { EmailValidatorAdapter } from '@/utils/email-validator.adapter';
 
 export const makeSignUpController = (): Controller => {
-  const emailValidator = new EmailValidatorAdapter();
   const bcryptAdapter = new BcryptAdapter();
   const accountRepository = new AccountMongoRepository();
   const addAccount = new AddAccountUsecase(bcryptAdapter, accountRepository);
   const signUpValidator = makeSignUpValidator();
 
-  const signUpController = new SignUpController(
-    emailValidator,
-    addAccount,
-    signUpValidator
-  );
+  const signUpController = new SignUpController(addAccount, signUpValidator);
 
   const logErrorRepository = new LogMongoRepository();
 

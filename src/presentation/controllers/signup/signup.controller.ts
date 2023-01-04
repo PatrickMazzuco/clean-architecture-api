@@ -1,9 +1,7 @@
 import { AddAccount } from '../../../domain/usecases/add-account.usecase';
-import { InvalidParamError } from '../../errors';
 import { HttpResponseFactory } from '../../helpers/http.helper';
 import {
   Controller,
-  EmailValidator,
   HttpRequest,
   HttpResponse,
   Validator
@@ -11,7 +9,6 @@ import {
 
 export class SignUpController implements Controller {
   constructor(
-    private readonly emailValidator: EmailValidator,
     private readonly addAccount: AddAccount,
     private readonly validator: Validator
   ) {}
@@ -25,13 +22,6 @@ export class SignUpController implements Controller {
       }
 
       const { name, email, password } = request.body;
-
-      const isEmailValid = this.emailValidator.isValid(email);
-      if (!isEmailValid) {
-        return HttpResponseFactory.BadRequestError(
-          new InvalidParamError('email')
-        );
-      }
 
       const account = await this.addAccount.execute({
         name,
