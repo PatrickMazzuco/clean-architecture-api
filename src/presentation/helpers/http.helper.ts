@@ -1,3 +1,4 @@
+import { UnauthorizedError } from '../errors';
 import { InternalServerError } from '../errors/internal-server.error';
 import { HttpResponse } from '../protocols/http';
 
@@ -6,6 +7,13 @@ export class HttpResponseFactory {
     return {
       statusCode: 400,
       body: error
+    };
+  }
+
+  static UnauthorizedError(): HttpResponse {
+    return {
+      statusCode: 401,
+      body: new UnauthorizedError()
     };
   }
 

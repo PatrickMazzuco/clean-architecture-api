@@ -33,6 +33,10 @@ export class LoginController implements Controller {
         password: request.body.password
       });
 
+      if (!authenticationResult.accessToken) {
+        return HttpResponseFactory.UnauthorizedError();
+      }
+
       return HttpResponseFactory.Ok(authenticationResult);
     } catch (error) {
       return HttpResponseFactory.InternalServerError(error as Error);

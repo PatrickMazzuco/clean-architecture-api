@@ -4,7 +4,7 @@ type Input = {
 };
 
 type Output = {
-  accessToken: string;
+  accessToken: string | null;
 };
 
 export namespace Authentication {
