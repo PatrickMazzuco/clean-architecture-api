@@ -4,7 +4,12 @@ import {
   MissingParamError
 } from '../../errors';
 import { SignUpController } from './signup.controller';
-import { AddAccount, EmailValidator, HttpRequest } from './signup.protocols';
+import {
+  AddAccount,
+  EmailValidator,
+  HttpRequest,
+  Validator
+} from './signup.protocols';
 
 const mockAccount = (): AddAccount.Result => ({
   id: 'valid_id',
@@ -35,6 +40,16 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const makeValidator = (): Validator => {
+  class ValidatorStub implements Validator {
+    validate(input: any): Error | null {
+      return null;
+    }
+  }
+
+  return new ValidatorStub();
+};
+
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async execute(params: AddAccount.Params): Promise<AddAccount.Result> {
@@ -51,18 +66,25 @@ type SutTypes = {
   sut: SignUpController;
   emailValidatorStub: EmailValidator;
   addAccountStub: AddAccount;
+  validatorStub: Validator;
 };
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator();
   const addAccountStub = makeAddAccount();
+  const validatorStub = makeValidator();
 
-  const sut = new SignUpController(emailValidatorStub, addAccountStub);
+  const sut = new SignUpController(
+    emailValidatorStub,
+    addAccountStub,
+    validatorStub
+  );
 
   return {
     sut,
     emailValidatorStub,
-    addAccountStub
+    addAccountStub,
+    validatorStub
   };
 };
 
@@ -196,5 +218,15 @@ describe('SignUp Controller', () => {
         password: expect.any(String)
       })
     );
+  });
+
+  it('should call Validator with correct email', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const validateSpy = jest.spyOn(validatorStub, 'validate');
+
+    await sut.handle(httpRequest);
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
