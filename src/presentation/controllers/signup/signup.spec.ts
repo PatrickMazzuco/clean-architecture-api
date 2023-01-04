@@ -10,6 +10,7 @@ import {
   HttpRequest,
   Validator
 } from './signup.protocols';
+import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
 
 const mockAccount = (): AddAccount.Result => ({
   id: 'valid_id',
@@ -228,5 +229,19 @@ describe('SignUp Controller', () => {
 
     await sut.handle(httpRequest);
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
+  });
+
+  it('should return status 400 if Validator returns an error', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest
+      .spyOn(validatorStub, 'validate')
+      .mockReturnValueOnce(new InvalidParamError('any_field'));
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.BadRequestError(new InvalidParamError('any_field'))
+    );
   });
 });
