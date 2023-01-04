@@ -1,8 +1,4 @@
-import {
-  InternalServerError,
-  InvalidParamError,
-  MissingParamError
-} from '../../errors';
+import { InternalServerError, InvalidParamError } from '../../errors';
 import { SignUpController } from './signup.controller';
 import {
   AddAccount,
@@ -90,48 +86,6 @@ const makeSut = (): SutTypes => {
 };
 
 describe('SignUp Controller', () => {
-  it('should return status 400 if no name is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = mockHttpRequest();
-    delete httpRequest.body.name;
-
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('name'));
-  });
-
-  it('should return status 400 if no email is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = mockHttpRequest();
-    delete httpRequest.body.email;
-
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('email'));
-  });
-
-  it('should return status 400 if no password is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = mockHttpRequest();
-    delete httpRequest.body.password;
-
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(new MissingParamError('password'));
-  });
-
-  it('should return status 400 if no passwordConfirmation is provided', async () => {
-    const { sut } = makeSut();
-    const httpRequest = mockHttpRequest();
-    delete httpRequest.body.passwordConfirmation;
-
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
-    expect(httpResponse.body).toEqual(
-      new MissingParamError('passwordConfirmation')
-    );
-  });
-
   it('should return status 400 if invalid email is provided', async () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = mockHttpRequest();
