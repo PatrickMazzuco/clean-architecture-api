@@ -5,17 +5,20 @@ import {
   Controller,
   EmailValidator,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
+  Validator
 } from './signup.protocols';
 
 export class SignUpController implements Controller {
   constructor(
     private readonly emailValidator: EmailValidator,
-    private readonly addAccount: AddAccount
+    private readonly addAccount: AddAccount,
+    private readonly validator: Validator
   ) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
+      this.validator.validate(request.body);
       const requiredFields = [
         'name',
         'email',
