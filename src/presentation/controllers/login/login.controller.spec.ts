@@ -1,5 +1,5 @@
 import { LoginController } from './login.controller';
-import { EmailValidator, HttpRequest } from './login.protocols';
+import { Authentication, EmailValidator, HttpRequest } from './login.protocols';
 import { InvalidParamError, MissingParamError } from '@/presentation/errors';
 import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
 
@@ -19,18 +19,34 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async execute(
+      params: Authentication.Params
+    ): Promise<Authentication.Result> {
+      return {
+        accessToken: 'any_token'
+      };
+    }
+  }
+  return new AuthenticationStub();
+};
+
 type SutTypes = {
   sut: LoginController;
   emailValidatorStub: EmailValidator;
+  authenticationStub: Authentication;
 };
 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator();
-  const sut = new LoginController(emailValidatorStub);
+  const authenticationStub = makeAuthentication();
+  const sut = new LoginController(emailValidatorStub, authenticationStub);
 
   return {
     sut,
-    emailValidatorStub
+    emailValidatorStub,
+    authenticationStub
   };
 };
 
@@ -79,7 +95,7 @@ describe('Login Controller', () => {
     );
   });
 
-  it('should return 500 if EmailValidator throws and error', async () => {
+  it('should return 500 if EmailValidator throws an error', async () => {
     const { sut, emailValidatorStub } = makeSut();
     const httpRequest = mockHttpRequest();
 
@@ -90,6 +106,45 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(
       HttpResponseFactory.InternalServerError(new Error())
+    );
+  });
+
+  it('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const authenticationSpy = jest.spyOn(authenticationStub, 'execute');
+
+    await sut.handle(httpRequest);
+    expect(authenticationSpy).toBeCalledWith({
+      email: httpRequest.body.email,
+      password: httpRequest.body.password
+    });
+  });
+
+  it('should return 500 if Authentication throws an error', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest.spyOn(authenticationStub, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
+    );
+  });
+
+  it('should return an access token when authentication is successfull', async () => {
+    const { sut } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.Ok({
+        accessToken: 'any_token'
+      })
     );
   });
 });
