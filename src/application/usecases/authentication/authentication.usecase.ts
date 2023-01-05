@@ -1,4 +1,4 @@
-import { FindAccountByEmailRepository } from '@/application/protocols/find-account-by-email.repository';
+import { FindAccountByEmailRepository } from '@/application/protocols/db/find-account-by-email.repository';
 import { Authentication } from '@/domain/usecases/authentication.usecase';
 
 export class AuthenticationUseCase implements Authentication {

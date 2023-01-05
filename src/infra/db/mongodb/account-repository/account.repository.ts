@@ -1,6 +1,6 @@
 import { MongoHelper } from '../helpers/mongodb.helper';
 import { AccountMapper } from './account.mapper';
-import { AddAccountRepository } from '@/application/protocols/add-account.repository';
+import { AddAccountRepository } from '@/application/protocols/db/add-account.repository';
 
 export class AccountMongoRepository implements AddAccountRepository {
   async add(

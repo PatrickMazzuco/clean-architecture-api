@@ -1,5 +1,5 @@
 import { AuthenticationUseCase } from './authentication.usecase';
-import { FindAccountByEmailRepository } from '@/application/protocols/find-account-by-email.repository';
+import { FindAccountByEmailRepository } from '@/application/protocols/db/find-account-by-email.repository';
 import { Account } from '@/domain/entities';
 import { Authentication } from '@/domain/usecases/authentication.usecase';
 

@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 
-import { Encrypter } from '@/application/protocols/encrypter.service';
+import { Encrypter } from '@/application/protocols/cryptography/encrypter.service';
 
 export class BcryptAdapter implements Encrypter {
   async encrypt(value: Encrypter.Params): Promise<Encrypter.Result> {
