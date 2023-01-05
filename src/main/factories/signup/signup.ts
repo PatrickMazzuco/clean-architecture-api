@@ -1,4 +1,4 @@
-import { LogControllerDecorator } from '../decorators/log.decorator';
+import { LogControllerDecorator } from '../../decorators/log.decorator';
 import { makeSignUpValidator } from './signup-validator';
 import { AddAccountUsecase } from '@/application/usecases/add-account/add-account.usecase';
 import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter.service';
