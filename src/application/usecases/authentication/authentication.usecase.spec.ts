@@ -69,4 +69,17 @@ describe('Authentication Usecase', () => {
 
     await expect(promise).rejects.toThrow();
   });
+
+  it('should return accessToken as null if FindAccountByEmailRepository return null', async () => {
+    const { sut, findAccountByEmailRepositoryStub } = makeSut();
+    const authData = mockAuthData();
+
+    jest
+      .spyOn(findAccountByEmailRepositoryStub, 'findByEmail')
+      .mockResolvedValueOnce(null);
+
+    const result = await sut.execute(authData);
+
+    await expect(result.accessToken).toBeNull();
+  });
 });
