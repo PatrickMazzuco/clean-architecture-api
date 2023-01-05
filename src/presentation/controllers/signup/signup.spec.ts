@@ -1,7 +1,7 @@
 import { InternalServerError, InvalidParamError } from '../../errors';
 import { SignUpController } from './signup.controller';
 import { AddAccount, HttpRequest, Validator } from './signup.protocols';
-import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
+import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 const mockAccount = (): AddAccount.Result => ({
   id: 'valid_id',

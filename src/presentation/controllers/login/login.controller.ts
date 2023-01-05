@@ -1,5 +1,5 @@
 import { Authentication, Controller, Validator } from './login.protocols';
-import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
+import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 export class LoginController implements Controller {
   constructor(

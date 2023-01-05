@@ -1,6 +1,6 @@
-import { UnauthorizedError } from '../errors';
-import { InternalServerError } from '../errors/internal-server.error';
-import { HttpResponse } from '../protocols/http';
+import { UnauthorizedError } from '../../errors';
+import { InternalServerError } from '../../errors/internal-server.error';
+import { HttpResponse } from '../../protocols/http';
 
 export class HttpResponseFactory {
   static BadRequestError(error: Error): HttpResponse {

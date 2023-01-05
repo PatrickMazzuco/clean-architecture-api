@@ -1,6 +1,6 @@
 import { LogControllerDecorator } from './log.decorator';
 import { LogErrorRepository } from '@/application/protocols/log-error.repository';
-import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
+import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 import { Controller } from '@/presentation/protocols';
 
 const makeLogErrorRepository = (): LogErrorRepository => {

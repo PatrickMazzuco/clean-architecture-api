@@ -1,5 +1,5 @@
 import { AddAccount } from '../../../domain/usecases/add-account.usecase';
-import { HttpResponseFactory } from '../../helpers/http.helper';
+import { HttpResponseFactory } from '../../helpers/http/http.helper';
 import {
   Controller,
   HttpRequest,

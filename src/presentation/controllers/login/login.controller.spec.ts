@@ -1,7 +1,7 @@
 import { LoginController } from './login.controller';
 import { Authentication, HttpRequest, Validator } from './login.protocols';
 import { InvalidParamError } from '@/presentation/errors';
-import { HttpResponseFactory } from '@/presentation/helpers/http.helper';
+import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 const mockHttpRequest = (): HttpRequest => ({
   body: {
