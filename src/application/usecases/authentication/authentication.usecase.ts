@@ -2,7 +2,7 @@ import {
   Authentication,
   FindAccountByEmailRepository,
   HashCompare,
-  TokenGenerator,
+  Encrypter,
   UpdateAccessTokenRepository
 } from './authentication.protocols';
 
@@ -10,7 +10,7 @@ export class AuthenticationUseCase implements Authentication {
   constructor(
     private readonly findAccountByEmailRepository: FindAccountByEmailRepository,
     private readonly hashCompare: HashCompare,
-    private readonly tokenGenerator: TokenGenerator,
+    private readonly encrypter: Encrypter,
     private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) {}
 
@@ -34,7 +34,7 @@ export class AuthenticationUseCase implements Authentication {
       return { accessToken: null };
     }
 
-    const accessToken = await this.tokenGenerator.generate({
+    const accessToken = await this.encrypter.encrypt({
       id: existingAccount.id
     });
 
