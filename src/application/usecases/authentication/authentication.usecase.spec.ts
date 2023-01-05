@@ -1,5 +1,8 @@
+import {
+  FindAccountByEmailRepository,
+  HashCompare
+} from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
-import { FindAccountByEmailRepository } from '@/application/protocols/db/find-account-by-email.repository';
 import { Account } from '@/domain/entities';
 import { Authentication } from '@/domain/usecases/authentication.usecase';
 
@@ -7,24 +10,32 @@ const mockAccount = (): Account => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@email.com',
-  password: 'valid_password'
+  password: 'hashed_password'
 });
 
 const mockAuthData = (): Authentication.Params => {
-  const { email, password } = mockAccount();
+  const { email } = mockAccount();
 
   return {
     email,
-    password
+    password: 'valid_password'
   };
 };
 
-type SutTypes = {
-  sut: AuthenticationUseCase;
-  findAccountByEmailRepositoryStub: FindAccountByEmailRepository;
+const makeHashCompare = (): HashCompare => {
+  class HashCompareStub implements HashCompare {
+    async compare({
+      value,
+      hash
+    }: HashCompare.Params): Promise<HashCompare.Result> {
+      return await new Promise((resolve) => resolve(true));
+    }
+  }
+
+  return new HashCompareStub();
 };
 
-const makeSut = (): SutTypes => {
+const makeFindAccountByEmailRepository = (): FindAccountByEmailRepository => {
   class FindAccountByEmailRepositoryStub
     implements FindAccountByEmailRepository
   {
@@ -33,13 +44,27 @@ const makeSut = (): SutTypes => {
     }
   }
 
-  const findAccountByEmailRepositoryStub =
-    new FindAccountByEmailRepositoryStub();
-  const sut = new AuthenticationUseCase(findAccountByEmailRepositoryStub);
+  return new FindAccountByEmailRepositoryStub();
+};
+
+type SutTypes = {
+  sut: AuthenticationUseCase;
+  findAccountByEmailRepositoryStub: FindAccountByEmailRepository;
+  hashCompareStub: HashCompare;
+};
+
+const makeSut = (): SutTypes => {
+  const findAccountByEmailRepositoryStub = makeFindAccountByEmailRepository();
+  const hashCompareStub = makeHashCompare();
+  const sut = new AuthenticationUseCase(
+    findAccountByEmailRepositoryStub,
+    hashCompareStub
+  );
 
   return {
     sut,
-    findAccountByEmailRepositoryStub
+    findAccountByEmailRepositoryStub,
+    hashCompareStub
   };
 };
 
@@ -80,6 +105,20 @@ describe('Authentication Usecase', () => {
 
     const result = await sut.execute(authData);
 
-    await expect(result.accessToken).toBeNull();
+    expect(result.accessToken).toBeNull();
+  });
+
+  it('should call HashCompare with correct values', async () => {
+    const { sut, hashCompareStub } = makeSut();
+    const authData = mockAuthData();
+    const { password } = mockAccount();
+
+    const hashCompareSpy = jest.spyOn(hashCompareStub, 'compare');
+    await sut.execute(authData);
+
+    expect(hashCompareSpy).toHaveBeenCalledWith({
+      value: authData.password,
+      hash: password
+    });
   });
 });

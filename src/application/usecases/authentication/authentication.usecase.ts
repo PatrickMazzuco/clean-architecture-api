@@ -1,15 +1,35 @@
-import { FindAccountByEmailRepository } from '@/application/protocols/db/find-account-by-email.repository';
-import { Authentication } from '@/domain/usecases/authentication.usecase';
+import {
+  Authentication,
+  FindAccountByEmailRepository,
+  HashCompare
+} from './authentication.protocols';
 
 export class AuthenticationUseCase implements Authentication {
   constructor(
-    private readonly findAccountByEmailRepository: FindAccountByEmailRepository
+    private readonly findAccountByEmailRepository: FindAccountByEmailRepository,
+    private readonly hashCompare: HashCompare
   ) {}
 
   async execute(
     authData: Authentication.Params
   ): Promise<Authentication.Result> {
-    await this.findAccountByEmailRepository.findByEmail(authData.email);
+    const existingAccount = await this.findAccountByEmailRepository.findByEmail(
+      authData.email
+    );
+
+    if (!existingAccount) {
+      return { accessToken: null };
+    }
+
+    const isValidPassword = await this.hashCompare.compare({
+      value: authData.password,
+      hash: existingAccount.password
+    });
+
+    if (!isValidPassword) {
+      return { accessToken: null };
+    }
+
     return { accessToken: null };
   }
 }
