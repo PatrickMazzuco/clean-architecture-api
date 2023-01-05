@@ -121,4 +121,15 @@ describe('Authentication Usecase', () => {
       hash: password
     });
   });
+
+  it('should return accessToken as null if HashCompare returns false', async () => {
+    const { sut, hashCompareStub } = makeSut();
+    const authData = mockAuthData();
+
+    jest.spyOn(hashCompareStub, 'compare').mockResolvedValueOnce(false);
+
+    const result = await sut.execute(authData);
+
+    expect(result.accessToken).toBeNull();
+  });
 });
