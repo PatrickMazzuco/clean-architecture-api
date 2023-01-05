@@ -1,12 +1,12 @@
 import {
   AddAccount,
   AddAccountRepository,
-  Encrypter
+  Hasher
 } from './add-account.protocols';
 
 export class AddAccountUsecase implements AddAccount {
   constructor(
-    private readonly encrypter: Encrypter,
+    private readonly hasher: Hasher,
     private readonly addAccountRepository: AddAccountRepository
   ) {}
 
@@ -15,7 +15,7 @@ export class AddAccountUsecase implements AddAccount {
     email,
     password
   }: AddAccount.Params): Promise<AddAccount.Result> {
-    const hashedPassword = await this.encrypter.encrypt(password);
+    const hashedPassword = await this.hasher.hash(password);
 
     return await this.addAccountRepository.add({
       name,

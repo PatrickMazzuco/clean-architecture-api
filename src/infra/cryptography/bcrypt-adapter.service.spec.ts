@@ -19,36 +19,36 @@ const makeSut = (): BcryptAdapter => {
 describe('Bcrypt Adapter', () => {
   it('should call bcrypt with correct value', async () => {
     const sut = makeSut();
-    const valueToEncrypt = 'any_value';
+    const valueToHash = 'any_value';
 
     const bcryptGenSaltSpy = jest.spyOn(bcrypt, 'genSalt');
     const bcryptHashSpy = jest.spyOn(bcrypt, 'hash');
 
-    await sut.encrypt(valueToEncrypt);
+    await sut.hash(valueToHash);
 
     expect(bcryptGenSaltSpy).toBeCalledTimes(1);
-    expect(bcryptHashSpy).toBeCalledWith(valueToEncrypt, 'any_salt');
+    expect(bcryptHashSpy).toBeCalledWith(valueToHash, 'any_salt');
   });
 
   it('should return the hashed password on success', async () => {
     const sut = makeSut();
-    const valueToEncrypt = 'any_value';
+    const valueToHash = 'any_value';
 
-    const hashedPassword = await sut.encrypt(valueToEncrypt);
+    const hashedPassword = await sut.hash(valueToHash);
 
     expect(hashedPassword).toEqual('any_hash');
-    expect(hashedPassword).not.toEqual(valueToEncrypt);
+    expect(hashedPassword).not.toEqual(valueToHash);
   });
 
   it('should throw if bcrypt throws', async () => {
     const sut = makeSut();
-    const valueToEncrypt = 'any_value';
+    const valueToHash = 'any_value';
 
     jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => {
       throw new Error();
     });
 
-    const promise = sut.encrypt(valueToEncrypt);
+    const promise = sut.hash(valueToHash);
 
     await expect(promise).rejects.toThrow();
   });
