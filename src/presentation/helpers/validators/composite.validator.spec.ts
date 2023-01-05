@@ -1,5 +1,5 @@
+import { Validator } from '../../protocols/validator';
 import { CompositeValidator } from './composite.validator';
-import { Validator } from './validator';
 import { MissingParamError } from '@/presentation/errors';
 
 const makeValidator = (): Validator => {
