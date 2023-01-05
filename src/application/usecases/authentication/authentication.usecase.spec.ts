@@ -1,12 +1,12 @@
 import {
+  Account,
+  Authentication,
   FindAccountByEmailRepository,
   HashCompare,
   TokenGenerator,
   UpdateAccessTokenRepository
 } from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
-import { Account } from '@/domain/entities';
-import { Authentication } from '@/domain/usecases/authentication.usecase';
 
 const mockAccount = (): Account => ({
   id: 'valid_id',
