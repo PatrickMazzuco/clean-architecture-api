@@ -1,7 +1,8 @@
 import {
   FindAccountByEmailRepository,
   HashCompare,
-  TokenGenerator
+  TokenGenerator,
+  UpdateAccessTokenRepository
 } from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
 import { Account } from '@/domain/entities';
@@ -23,12 +24,30 @@ const mockAuthData = (): Authentication.Params => {
   };
 };
 
+const mockResponse = (): Authentication.Result => ({
+  accessToken: 'valid_token'
+});
+
+const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
+  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+    async updateAccessToken(
+      params: UpdateAccessTokenRepository.Params
+    ): Promise<void> {
+      return await new Promise((resolve) => resolve());
+    }
+  }
+
+  return new UpdateAccessTokenRepositoryStub();
+};
+
 const makeTokenGenerator = (): TokenGenerator => {
   class TokenGeneratorStub implements TokenGenerator {
     async generate(
       params: TokenGenerator.Params
     ): Promise<TokenGenerator.Result> {
-      return await new Promise((resolve) => resolve('valid_token'));
+      return await new Promise((resolve) =>
+        resolve(mockResponse().accessToken as string)
+      );
     }
   }
 
@@ -65,23 +84,27 @@ type SutTypes = {
   findAccountByEmailRepositoryStub: FindAccountByEmailRepository;
   hashCompareStub: HashCompare;
   tokenGeneratorStub: TokenGenerator;
+  updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
 };
 
 const makeSut = (): SutTypes => {
   const findAccountByEmailRepositoryStub = makeFindAccountByEmailRepository();
   const hashCompareStub = makeHashCompare();
   const tokenGeneratorStub = makeTokenGenerator();
+  const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository();
   const sut = new AuthenticationUseCase(
     findAccountByEmailRepositoryStub,
     hashCompareStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    updateAccessTokenRepositoryStub
   );
 
   return {
     sut,
     findAccountByEmailRepositoryStub,
     hashCompareStub,
-    tokenGeneratorStub
+    tokenGeneratorStub,
+    updateAccessTokenRepositoryStub
   };
 };
 
@@ -182,5 +205,35 @@ describe('Authentication Usecase', () => {
     const result = await sut.execute(authData);
 
     expect(result.accessToken).toBe('valid_token');
+  });
+
+  it('should call UpdateAccessTokenRepository with correct values', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+    const authData = mockAuthData();
+    const { id } = mockAccount();
+    const { accessToken } = mockResponse();
+
+    const updateAccessTokenSpy = jest.spyOn(
+      updateAccessTokenRepositoryStub,
+      'updateAccessToken'
+    );
+    await sut.execute(authData);
+
+    expect(updateAccessTokenSpy).toHaveBeenCalledWith({
+      id,
+      accessToken
+    });
+  });
+
+  it('should throw when UpdateAccessTokenRepository throws an error', async () => {
+    const { sut, updateAccessTokenRepositoryStub } = makeSut();
+    const authData = mockAuthData();
+
+    jest
+      .spyOn(updateAccessTokenRepositoryStub, 'updateAccessToken')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.execute(authData);
+
+    await expect(promise).rejects.toThrow();
   });
 });

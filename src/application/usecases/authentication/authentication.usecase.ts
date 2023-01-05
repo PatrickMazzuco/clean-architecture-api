@@ -2,14 +2,16 @@ import {
   Authentication,
   FindAccountByEmailRepository,
   HashCompare,
-  TokenGenerator
+  TokenGenerator,
+  UpdateAccessTokenRepository
 } from './authentication.protocols';
 
 export class AuthenticationUseCase implements Authentication {
   constructor(
     private readonly findAccountByEmailRepository: FindAccountByEmailRepository,
     private readonly hashCompare: HashCompare,
-    private readonly tokenGenerator: TokenGenerator
+    private readonly tokenGenerator: TokenGenerator,
+    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
   ) {}
 
   async execute(
@@ -34,6 +36,11 @@ export class AuthenticationUseCase implements Authentication {
 
     const accessToken = await this.tokenGenerator.generate({
       id: existingAccount.id
+    });
+
+    await this.updateAccessTokenRepository.updateAccessToken({
+      id: existingAccount.id,
+      accessToken
     });
 
     return { accessToken };
