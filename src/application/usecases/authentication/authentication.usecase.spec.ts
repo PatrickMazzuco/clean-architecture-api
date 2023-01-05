@@ -44,7 +44,7 @@ const makeSut = (): SutTypes => {
 };
 
 describe('Authentication Usecase', () => {
-  test('should call FindAccountByEmailRepository with correct email', async () => {
+  it('should call FindAccountByEmailRepository with correct email', async () => {
     const { sut, findAccountByEmailRepositoryStub } = makeSut();
     const authData = mockAuthData();
 
@@ -55,5 +55,18 @@ describe('Authentication Usecase', () => {
     await sut.execute(authData);
 
     expect(findAccountSpy).toHaveBeenCalledWith(authData.email);
+  });
+
+  it('should throw if FindAccountByEmailRepository throws an error', async () => {
+    const { sut, findAccountByEmailRepositoryStub } = makeSut();
+    const authData = mockAuthData();
+
+    jest
+      .spyOn(findAccountByEmailRepositoryStub, 'findByEmail')
+      .mockRejectedValueOnce(new Error());
+
+    const promise = sut.execute(authData);
+
+    await expect(promise).rejects.toThrow();
   });
 });
