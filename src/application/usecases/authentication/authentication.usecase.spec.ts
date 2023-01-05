@@ -1,6 +1,7 @@
 import {
   FindAccountByEmailRepository,
-  HashCompare
+  HashCompare,
+  TokenGenerator
 } from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
 import { Account } from '@/domain/entities';
@@ -20,6 +21,18 @@ const mockAuthData = (): Authentication.Params => {
     email,
     password: 'valid_password'
   };
+};
+
+const makeTokenGenerator = (): TokenGenerator => {
+  class TokenGeneratorStub implements TokenGenerator {
+    async generate(
+      params: TokenGenerator.Params
+    ): Promise<TokenGenerator.Result> {
+      return await new Promise((resolve) => resolve('valid_token'));
+    }
+  }
+
+  return new TokenGeneratorStub();
 };
 
 const makeHashCompare = (): HashCompare => {
@@ -51,20 +64,24 @@ type SutTypes = {
   sut: AuthenticationUseCase;
   findAccountByEmailRepositoryStub: FindAccountByEmailRepository;
   hashCompareStub: HashCompare;
+  tokenGeneratorStub: TokenGenerator;
 };
 
 const makeSut = (): SutTypes => {
   const findAccountByEmailRepositoryStub = makeFindAccountByEmailRepository();
   const hashCompareStub = makeHashCompare();
+  const tokenGeneratorStub = makeTokenGenerator();
   const sut = new AuthenticationUseCase(
     findAccountByEmailRepositoryStub,
-    hashCompareStub
+    hashCompareStub,
+    tokenGeneratorStub
   );
 
   return {
     sut,
     findAccountByEmailRepositoryStub,
-    hashCompareStub
+    hashCompareStub,
+    tokenGeneratorStub
   };
 };
 
@@ -131,5 +148,18 @@ describe('Authentication Usecase', () => {
     const result = await sut.execute(authData);
 
     expect(result.accessToken).toBeNull();
+  });
+
+  it('should call TokenGenerator with correct values', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    const authData = mockAuthData();
+    const { id } = mockAccount();
+
+    const generateSpy = jest.spyOn(tokenGeneratorStub, 'generate');
+    await sut.execute(authData);
+
+    expect(generateSpy).toHaveBeenCalledWith({
+      id
+    });
   });
 });
