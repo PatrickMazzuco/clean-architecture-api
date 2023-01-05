@@ -162,4 +162,16 @@ describe('Authentication Usecase', () => {
       id
     });
   });
+
+  it('should throw when TokenGenerator throws an error', async () => {
+    const { sut, tokenGeneratorStub } = makeSut();
+    const authData = mockAuthData();
+
+    jest
+      .spyOn(tokenGeneratorStub, 'generate')
+      .mockRejectedValueOnce(new Error());
+    const promise = sut.execute(authData);
+
+    await expect(promise).rejects.toThrow();
+  });
 });
