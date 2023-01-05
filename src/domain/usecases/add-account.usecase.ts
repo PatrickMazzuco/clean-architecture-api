@@ -13,6 +13,6 @@ export namespace AddAccount {
   export type Result = Output;
 }
 
-export abstract class AddAccount {
-  abstract execute: (params: AddAccount.Params) => Promise<AddAccount.Result>;
+export interface AddAccount {
+  execute: (params: AddAccount.Params) => Promise<AddAccount.Result>;
 }

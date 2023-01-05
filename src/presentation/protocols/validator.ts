@@ -1,3 +1,3 @@
-export abstract class Validator {
-  abstract validate(input: any): Error | null;
+export interface Validator {
+  validate: (input: any) => Error | null;
 }

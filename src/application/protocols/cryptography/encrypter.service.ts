@@ -6,6 +6,6 @@ export namespace Encrypter {
   export type Result = Output;
 }
 
-export abstract class Encrypter {
-  abstract encrypt(param: Encrypter.Params): Promise<Encrypter.Result>;
+export interface Encrypter {
+  encrypt: (param: Encrypter.Params) => Promise<Encrypter.Result>;
 }

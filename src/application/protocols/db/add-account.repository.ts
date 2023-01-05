@@ -13,8 +13,8 @@ export namespace AddAccountRepository {
   export type Result = Output;
 }
 
-export abstract class AddAccountRepository {
-  abstract add(
+export interface AddAccountRepository {
+  add: (
     params: AddAccountRepository.Params
-  ): Promise<AddAccountRepository.Result>;
+  ) => Promise<AddAccountRepository.Result>;
 }

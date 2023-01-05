@@ -9,8 +9,8 @@ export namespace LogErrorRepository {
   export type Result = Output;
 }
 
-export abstract class LogErrorRepository {
-  abstract logError(
+export interface LogErrorRepository {
+  logError: (
     params: LogErrorRepository.Params
-  ): Promise<LogErrorRepository.Result>;
+  ) => Promise<LogErrorRepository.Result>;
 }

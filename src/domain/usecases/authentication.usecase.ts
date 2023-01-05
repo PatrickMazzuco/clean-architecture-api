@@ -12,8 +12,6 @@ export namespace Authentication {
   export type Result = Output;
 }
 
-export abstract class Authentication {
-  abstract execute: (
-    params: Authentication.Params
-  ) => Promise<Authentication.Result>;
+export interface Authentication {
+  execute: (params: Authentication.Params) => Promise<Authentication.Result>;
 }

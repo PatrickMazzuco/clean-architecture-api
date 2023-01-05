@@ -8,6 +8,6 @@ export namespace Controller {
   export type Result = Output;
 }
 
-export abstract class Controller {
-  abstract handle: (request: Controller.Params) => Promise<Controller.Result>;
+export interface Controller {
+  handle: (request: Controller.Params) => Promise<Controller.Result>;
 }
