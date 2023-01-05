@@ -174,4 +174,13 @@ describe('Authentication Usecase', () => {
 
     await expect(promise).rejects.toThrow();
   });
+
+  it('should return accessToken on success', async () => {
+    const { sut } = makeSut();
+    const authData = mockAuthData();
+
+    const result = await sut.execute(authData);
+
+    expect(result.accessToken).toBe('valid_token');
+  });
 });
