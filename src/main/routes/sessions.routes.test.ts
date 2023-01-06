@@ -33,10 +33,7 @@ describe('Sessions Route', () => {
 
       expect(response.body).toEqual(
         expect.objectContaining({
-          id: expect.any(String),
-          name: accountData.name,
-          email: accountData.email,
-          password: expect.any(String)
+          accessToken: expect.any(String)
         })
       );
     });

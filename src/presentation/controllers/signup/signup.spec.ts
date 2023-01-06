@@ -1,6 +1,11 @@
 import { InternalServerError, InvalidParamError } from '../../errors';
 import { SignUpController } from './signup.controller';
-import { AddAccount, HttpRequest, Validator } from './signup.protocols';
+import {
+  AddAccount,
+  Authentication,
+  HttpRequest,
+  Validator
+} from './signup.protocols';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 const mockAccount = (): AddAccount.Result => ({
@@ -44,22 +49,42 @@ const makeAddAccount = (): AddAccount => {
   return new AddAccountStub();
 };
 
+const makeAuthentication = (): Authentication => {
+  class AuthenticationStub implements Authentication {
+    async execute(
+      params: Authentication.Params
+    ): Promise<Authentication.Result> {
+      return {
+        accessToken: 'any_token'
+      };
+    }
+  }
+  return new AuthenticationStub();
+};
+
 type SutTypes = {
   sut: SignUpController;
   addAccountStub: AddAccount;
   validatorStub: Validator;
+  authenticationStub: Authentication;
 };
 
 const makeSut = (): SutTypes => {
   const addAccountStub = makeAddAccount();
   const validatorStub = makeValidator();
+  const authenticationStub = makeAuthentication();
 
-  const sut = new SignUpController(addAccountStub, validatorStub);
+  const sut = new SignUpController(
+    addAccountStub,
+    validatorStub,
+    authenticationStub
+  );
 
   return {
     sut,
     addAccountStub,
-    validatorStub
+    validatorStub,
+    authenticationStub
   };
 };
 
@@ -97,10 +122,7 @@ describe('SignUp Controller', () => {
     expect(httpResponse.statusCode).toBe(200);
     expect(httpResponse.body).toEqual(
       expect.objectContaining({
-        id: expect.any(String),
-        name: httpRequest.body.name,
-        email: httpRequest.body.email,
-        password: expect.any(String)
+        accessToken: expect.any(String)
       })
     );
   });
@@ -126,6 +148,33 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(
       HttpResponseFactory.BadRequestError(new InvalidParamError('any_field'))
+    );
+  });
+
+  it('should call Authentication with correct values', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const authenticationSpy = jest.spyOn(authenticationStub, 'execute');
+
+    await sut.handle(httpRequest);
+    expect(authenticationSpy).toBeCalledWith({
+      email: httpRequest.body.email,
+      password: httpRequest.body.password
+    });
+  });
+
+  it('should return 500 if Authentication throws an error', async () => {
+    const { sut, authenticationStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest.spyOn(authenticationStub, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
     );
   });
 });

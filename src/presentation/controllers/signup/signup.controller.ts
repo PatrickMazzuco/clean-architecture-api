@@ -1,6 +1,7 @@
 import { AddAccount } from '../../../domain/usecases/add-account.usecase';
 import { HttpResponseFactory } from '../../helpers/http/http.helper';
 import {
+  Authentication,
   Controller,
   HttpRequest,
   HttpResponse,
@@ -10,7 +11,8 @@ import {
 export class SignUpController implements Controller {
   constructor(
     private readonly addAccount: AddAccount,
-    private readonly validator: Validator
+    private readonly validator: Validator,
+    private readonly authentication: Authentication
   ) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
@@ -23,13 +25,18 @@ export class SignUpController implements Controller {
 
       const { name, email, password } = request.body;
 
-      const account = await this.addAccount.execute({
+      await this.addAccount.execute({
         name,
         email,
         password
       });
 
-      return HttpResponseFactory.Ok(account);
+      const authenticationResult = await this.authentication.execute({
+        email,
+        password
+      });
+
+      return HttpResponseFactory.Ok(authenticationResult);
     } catch (error) {
       return HttpResponseFactory.InternalServerError(error as Error);
     }
