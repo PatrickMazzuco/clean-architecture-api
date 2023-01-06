@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { AccountMongo } from '../../models/Account.model';
 import { MongoHelper } from '../helpers/mongodb.helper';
 import { AccountMongoRepository } from './account.repository';
 
@@ -75,5 +77,31 @@ describe('Account Mongo Repository', () => {
     const foundAccount = await sut.findByEmail(accountData.email);
 
     expect(foundAccount).toBeNull();
+  });
+
+  it('should update the account accessToken on updateAccessToken success', async () => {
+    const sut = makeSut();
+    const accountData = {
+      name: 'any_name',
+      email: 'any_email@email.com',
+      password: 'any_password'
+    };
+    const accessToken = 'any_token';
+
+    const accountCollection = MongoHelper.getCollection('accounts');
+    const result = await accountCollection.insertOne(accountData);
+    const id = result.insertedId;
+
+    await sut.updateAccessToken({
+      id: id.toString(),
+      accessToken
+    });
+
+    const foundAccount = await accountCollection.findOne<AccountMongo>({
+      _id: id
+    });
+
+    expect(foundAccount).toBeTruthy();
+    expect(foundAccount!.accessToken).toBe(accessToken);
   });
 });

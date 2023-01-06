@@ -1,13 +1,7 @@
 import { ObjectId } from 'mongodb';
 
+import { AccountMongo } from '../../models/Account.model';
 import { Account } from '@/domain/entities';
-
-type AccountMongo = {
-  _id: ObjectId;
-  name: string;
-  email: string;
-  password: string;
-};
 
 export class AccountMapper {
   static toEntity(data: AccountMongo): Account {
@@ -15,7 +9,18 @@ export class AccountMapper {
       id: data._id.toString(),
       name: data.name,
       email: data.email,
-      password: data.password
+      password: data.password,
+      accessToken: data.accessToken
+    };
+  }
+
+  static toDatabase(data: Account): AccountMongo {
+    return {
+      _id: new ObjectId(data.id),
+      name: data.name,
+      email: data.email,
+      password: data.password,
+      accessToken: data.accessToken
     };
   }
 }
