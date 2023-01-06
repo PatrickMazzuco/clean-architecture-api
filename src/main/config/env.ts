@@ -18,5 +18,6 @@ const buildMongoUrl = (): string => {
 
 export default {
   mongoUrl: buildMongoUrl(),
-  port: process.env.PORT ?? 3000
+  port: process.env.PORT ?? 3000,
+  jwtSecret: process.env.JWT_SECRET ?? '175e748f-d460-4605-8312-4b81e9825ac5'
 };
