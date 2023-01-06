@@ -12,6 +12,8 @@
     "test:unit": "npm test -- --watch -c jest-unit.config.ts",
     "test:integration": "npm test -- --watch -c jest-integration.config.ts",
     "test:staged": "npm test -- --findRelatedTests",
+    "lint": "eslint 'src/**' --fix",
+    "format": "prettier --write 'src/**/*.{js,ts}'",
     "prepare": "husky install"
   },
   "keywords": [],

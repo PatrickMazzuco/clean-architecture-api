@@ -1,5 +1,5 @@
 import { LogControllerDecorator } from './log.decorator';
-import { LogErrorRepository } from '@/application/protocols/db/log-error.repository';
+import { LogErrorRepository } from '@/application/protocols/db/log/log-error.repository';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 import { Controller } from '@/presentation/protocols';
 

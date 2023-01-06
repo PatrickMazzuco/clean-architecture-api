@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb';
 
-import { AccountMongo } from '../../models/Account.model';
+import { AccountMongo } from '../models/Account.model';
 import { Account } from '@/domain/entities';
 
 export class AccountMapper {
