@@ -4,6 +4,12 @@
     "module": "commonjs",
     "outDir": "dist",
     "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "sourceMap": true,
     "paths": {
       "@/domain/*": [
         "src/domain/*"
@@ -23,12 +29,7 @@
       "@/utils/*": [
         "src/utils/*"
       ]
-    },
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    }
   },
   "include": [
     "src/**/*"

@@ -2,18 +2,23 @@ version: '3.7'
 services:
   api:
     container_name: api
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: node:18
+    working_dir: /usr/src/app
     restart: unless-stopped
+    command: bash -c "npm i -g pnpm && pnpm install && pnpm dev:debug"
     depends_on:
       - mongodb
     ports:
       - "${PORT}:3000"
+      - "9229:9229"
+    volumes:
+      - ./:/usr/src/app/
+    links:
+      - mongodb
     env_file:
       - .env
     environment:
-      - MONGO_HOST=mongodb
+      - MONGO_URL=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/clean-api?authSource=admin
   mongodb:
     image: mongo:5
     restart: unless-stopped

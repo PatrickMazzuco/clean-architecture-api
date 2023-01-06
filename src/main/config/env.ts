@@ -29,8 +29,6 @@ const buildMongoUrl = (): string => {
   return 'mongodb://localhost:27017/clean-api?authSource=admin';
 };
 
-console.log(buildMongoUrl());
-
 export default {
   mongoUrl: buildMongoUrl(),
   port: process.env.PORT ?? 3000,
