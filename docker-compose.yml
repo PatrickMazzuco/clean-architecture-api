@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     container_name: mongodb
     volumes:
-      - mongodb:/data/db
+      - /data/mongodb:/data/db
     ports:
       - "${MONGO_PORT}:27017"
     env_file:
@@ -27,5 +27,3 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-volumes:
-  mongodb:

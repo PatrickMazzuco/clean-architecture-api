@@ -8,14 +8,28 @@ const buildMongoUrl = (): string => {
     return MONGO_URL;
   }
 
-  const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE } = process.env;
+  const {
+    MONGO_HOST,
+    MONGO_PORT,
+    MONGO_DATABASE,
+    MONGO_USERNAME,
+    MONGO_PASSWORD
+  } = process.env;
 
-  if (MONGO_HOST && MONGO_PORT && MONGO_DATABASE) {
-    return `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`;
+  if (
+    MONGO_HOST &&
+    MONGO_PORT &&
+    MONGO_DATABASE &&
+    MONGO_USERNAME &&
+    MONGO_PASSWORD
+  ) {
+    return `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}?authSource=admin`;
   }
 
-  return 'mongodb://localhost:27017/clean-api';
+  return 'mongodb://localhost:27017/clean-api?authSource=admin';
 };
+
+console.log(buildMongoUrl());
 
 export default {
   mongoUrl: buildMongoUrl(),
