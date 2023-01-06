@@ -1,13 +1,12 @@
 import { Express, Router } from 'express';
-import fg from 'fast-glob';
+
+import sessionsRouter from '../routes/sessions.routes';
 
 const setupRoutes = (app: Express): void => {
   const router = Router();
   app.use('/api', router);
 
-  fg.sync('**/src/main/routes/**.routes.ts').map(async (file) => {
-    (await import(`../../../${file}`)).default(router);
-  });
+  sessionsRouter(router);
 };
 
 export default setupRoutes;
