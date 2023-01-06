@@ -8,9 +8,10 @@ const buildMongoUrl = (): string => {
     return MONGO_URL;
   }
 
-  const { MONGO_HOST, MONGO_PORT, MONGO_DB } = process.env;
-  if (MONGO_HOST && MONGO_PORT && MONGO_DB) {
-    return `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
+  const { MONGO_HOST, MONGO_PORT, MONGO_DATABASE } = process.env;
+
+  if (MONGO_HOST && MONGO_PORT && MONGO_DATABASE) {
+    return `mongodb://${MONGO_HOST}:${MONGO_PORT}/${MONGO_DATABASE}`;
   }
 
   return 'mongodb://localhost:27017/clean-api';
