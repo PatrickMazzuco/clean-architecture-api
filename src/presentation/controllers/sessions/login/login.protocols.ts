@@ -1,2 +1,2 @@
-export * from '@/domain/usecases/authentication.usecase';
+export * from '@/domain/usecases/sessions/authentication.usecase';
 export * from '../../../protocols';

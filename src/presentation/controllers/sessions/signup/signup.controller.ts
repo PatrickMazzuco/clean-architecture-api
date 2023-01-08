@@ -1,4 +1,4 @@
-import { IAddAccount } from '../../../../domain/usecases/add-account.usecase';
+import { IAddAccount } from '../../../../domain/usecases/sessions/add-account.usecase';
 import { HttpResponseFactory } from '../../../helpers/http/http.helper';
 import {
   IAuthentication,
