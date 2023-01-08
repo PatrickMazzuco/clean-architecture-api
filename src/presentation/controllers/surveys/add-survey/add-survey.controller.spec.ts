@@ -1,5 +1,7 @@
 import { AddSurveyController } from './add-survey.controller';
 import { HttpRequest, IValidator } from './add-survey.protocols';
+import { InvalidParamError } from '@/presentation/errors';
+import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 const mockHttpRequest = (): HttpRequest => ({
   body: {
@@ -47,5 +49,36 @@ describe('AddSurvey Controller', () => {
     await sut.handle(httpRequest);
 
     expect(validatorSpy).toBeCalledWith(httpRequest.body);
+  });
+
+  it('should return 400 if Validator fails', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+    const invalidFieldName = 'any_field';
+
+    jest
+      .spyOn(validatorStub, 'validate')
+      .mockReturnValueOnce(new InvalidParamError(invalidFieldName));
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.BadRequestError(
+        new InvalidParamError(invalidFieldName)
+      )
+    );
+  });
+
+  it('should return 500 if Validator throws', async () => {
+    const { sut, validatorStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest.spyOn(validatorStub, 'validate').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
+    );
   });
 });

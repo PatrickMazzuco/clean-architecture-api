@@ -6,7 +6,11 @@ export class AddSurveyController implements IController {
 
   async handle(request: IController.Params): Promise<IController.Result> {
     try {
-      await this.validator.validate(request.body);
+      const error = await this.validator.validate(request.body);
+      if (error) {
+        return HttpResponseFactory.BadRequestError(error);
+      }
+
       return HttpResponseFactory.Ok({});
     } catch (error) {
       return HttpResponseFactory.InternalServerError(error as Error);
