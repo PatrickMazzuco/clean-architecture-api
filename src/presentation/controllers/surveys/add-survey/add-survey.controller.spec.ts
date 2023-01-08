@@ -103,6 +103,20 @@ describe('AddSurvey Controller', () => {
     expect(validatorSpy).toBeCalledWith(httpRequest.body);
   });
 
+  it('should return 500 if AddSurvey throws', async () => {
+    const { sut, addSurveyStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    jest.spyOn(addSurveyStub, 'add').mockImplementationOnce(() => {
+      throw new Error();
+    });
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
+    );
+  });
+
   it('should return 204 if successfull', async () => {
     const { sut } = makeSut();
     const httpRequest = mockHttpRequest();
