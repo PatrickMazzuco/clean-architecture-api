@@ -1,5 +1,5 @@
 import { AddSurveyController } from './add-survey.controller';
-import { HttpRequest, IValidator } from './add-survey.protocols';
+import { HttpRequest, IAddSurvey, IValidator } from './add-survey.protocols';
 import { InvalidParamError } from '@/presentation/errors';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
@@ -25,18 +25,29 @@ const makeValidator = (): IValidator => {
   return new ValidatorStub();
 };
 
+const makeAddSurvey = (): IAddSurvey => {
+  class AddSurveyStub implements IAddSurvey {
+    async add(params: IAddSurvey.Params): Promise<IAddSurvey.Result> {}
+  }
+
+  return new AddSurveyStub();
+};
+
 type SutTypes = {
   sut: AddSurveyController;
   validatorStub: IValidator;
+  addSurveyStub: IAddSurvey;
 };
 
 const makeSut = (): SutTypes => {
   const validatorStub = makeValidator();
-  const sut = new AddSurveyController(validatorStub);
+  const addSurveyStub = makeAddSurvey();
+  const sut = new AddSurveyController(validatorStub, addSurveyStub);
 
   return {
     sut,
-    validatorStub
+    validatorStub,
+    addSurveyStub
   };
 };
 
@@ -80,5 +91,24 @@ describe('AddSurvey Controller', () => {
     expect(httpResponse).toEqual(
       HttpResponseFactory.InternalServerError(new Error())
     );
+  });
+
+  it('should call AddSurvey with correct values', async () => {
+    const { sut, addSurveyStub } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const validatorSpy = jest.spyOn(addSurveyStub, 'add');
+    await sut.handle(httpRequest);
+
+    expect(validatorSpy).toBeCalledWith(httpRequest.body);
+  });
+
+  it('should return 204 if successfull', async () => {
+    const { sut } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(HttpResponseFactory.NoContent());
   });
 });

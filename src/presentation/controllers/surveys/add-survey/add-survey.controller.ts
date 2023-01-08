@@ -1,17 +1,26 @@
-import { IController, IValidator } from './add-survey.protocols';
+import { IAddSurvey, IController, IValidator } from './add-survey.protocols';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 export class AddSurveyController implements IController {
-  constructor(private readonly validator: IValidator) {}
+  constructor(
+    private readonly validator: IValidator,
+    private readonly addSurvey: IAddSurvey
+  ) {}
 
   async handle(request: IController.Params): Promise<IController.Result> {
     try {
-      const error = await this.validator.validate(request.body);
+      const error = this.validator.validate(request.body);
       if (error) {
         return HttpResponseFactory.BadRequestError(error);
       }
 
-      return HttpResponseFactory.Ok({});
+      const { question, answers } = request.body;
+      await this.addSurvey.add({
+        question,
+        answers
+      });
+
+      return HttpResponseFactory.NoContent();
     } catch (error) {
       return HttpResponseFactory.InternalServerError(error as Error);
     }
