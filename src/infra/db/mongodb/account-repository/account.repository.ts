@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 
 import { MongoHelper } from '../helpers/mongodb.helper';
-import { AccountMongo } from '../models/Account.model';
+import { AccountMongo } from '../models/account.model';
 import { AccountMapper } from './account.mapper';
 import { IAddAccountRepository } from '@/application/protocols/db/account/add-account.repository';
 import { IFindAccountByEmailRepository } from '@/application/protocols/db/account/find-account-by-email.repository';

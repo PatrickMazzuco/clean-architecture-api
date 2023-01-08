@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { MongoHelper } from '../helpers/mongodb.helper';
-import { AccountMongo } from '../models/Account.model';
+import { AccountMongo } from '../models/account.model';
 import { AccountMongoRepository } from './account.repository';
 
 describe('Account Mongo Repository', () => {
