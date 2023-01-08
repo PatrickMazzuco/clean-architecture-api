@@ -1,4 +1,4 @@
-import { InternalServerError, InvalidParamError } from '../../errors';
+import { InternalServerError, InvalidParamError } from '../../../errors';
 import { SignUpController } from './signup.controller';
 import {
   IAddAccount,

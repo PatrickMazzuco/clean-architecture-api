@@ -1,5 +1,5 @@
-import { IAddAccount } from '../../../domain/usecases/add-account.usecase';
-import { HttpResponseFactory } from '../../helpers/http/http.helper';
+import { IAddAccount } from '../../../../domain/usecases/add-account.usecase';
+import { HttpResponseFactory } from '../../../helpers/http/http.helper';
 import {
   IAuthentication,
   IController,
