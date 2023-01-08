@@ -1,6 +1,6 @@
-import { IValidator } from '../../protocols/validator';
 import { CompositeValidator } from './composite.validator';
 import { MissingParamError } from '@/presentation/errors';
+import { IValidator } from '@/presentation/protocols/validator';
 
 const makeValidator = (): IValidator => {
   class ValidatorStub implements IValidator {

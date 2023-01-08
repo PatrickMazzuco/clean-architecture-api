@@ -1,5 +1,5 @@
-import { IValidator } from '../../protocols/validator';
 import { InvalidParamError } from '@/presentation/errors';
+import { IValidator } from '@/presentation/protocols/validator';
 
 export class CompareFieldValidator implements IValidator {
   constructor(

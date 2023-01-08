@@ -1,15 +1,15 @@
 import { makeSignUpValidator } from './signup-validator.factory';
-import { CompareFieldValidator } from '@/presentation/helpers/validators/compare-field.validator';
-import { CompositeValidator } from '@/presentation/helpers/validators/composite.validator';
-import { EmailValidator } from '@/presentation/helpers/validators/email.validator';
-import { RequiredFieldValidator } from '@/presentation/helpers/validators/required-field.validator';
 import { IValidator } from '@/presentation/protocols';
-import { IEmailValidator as EmailValidatorService } from '@/presentation/protocols/email-validator/email-validator';
+import { IEmailValidator } from '@/validation/protocols/email-validator';
+import { CompareFieldValidator } from '@/validation/validators/compare-field.validator';
+import { CompositeValidator } from '@/validation/validators/composite.validator';
+import { EmailValidator } from '@/validation/validators/email.validator';
+import { RequiredFieldValidator } from '@/validation/validators/required-field.validator';
 
-jest.mock('@/presentation/helpers/validators/composite.validator');
+jest.mock('@/validation/validators/composite.validator');
 
-const makeEmailValidatorService = (): EmailValidatorService => {
-  class EmailValidatorServiceStub implements EmailValidatorService {
+const makeEmailValidatorService = (): IEmailValidator => {
+  class EmailValidatorServiceStub implements IEmailValidator {
     isValid(email: string): boolean {
       return true;
     }

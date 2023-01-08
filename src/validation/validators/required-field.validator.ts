@@ -1,5 +1,5 @@
-import { IValidator } from '../../protocols/validator';
 import { MissingParamError } from '@/presentation/errors';
+import { IValidator } from '@/presentation/protocols/validator';
 
 export class RequiredFieldValidator implements IValidator {
   constructor(private readonly fieldName: string) {}

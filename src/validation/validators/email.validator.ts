@@ -1,11 +1,11 @@
-import { IValidator } from '../../protocols/validator';
 import { InvalidParamError } from '@/presentation/errors';
-import { IEmailValidator as EmailValidatorService } from '@/presentation/protocols/email-validator/email-validator';
+import { IValidator } from '@/presentation/protocols/validator';
+import { IEmailValidator } from '@/validation/protocols/email-validator';
 
 export class EmailValidator implements IValidator {
   constructor(
     private readonly fieldName: string,
-    private readonly emailValidator: EmailValidatorService
+    private readonly emailValidator: IEmailValidator
   ) {}
 
   validate(input: any): Error | null {
