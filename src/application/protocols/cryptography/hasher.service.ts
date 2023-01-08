@@ -1,11 +1,11 @@
 type Input = string;
 type Output = string;
 
-export namespace Hasher {
+export namespace IHasher {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface Hasher {
-  hash: (param: Hasher.Params) => Promise<Hasher.Result>;
+export interface IHasher {
+  hash: (param: IHasher.Params) => Promise<IHasher.Result>;
 }

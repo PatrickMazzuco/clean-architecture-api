@@ -1,5 +1,5 @@
 import { LoginController } from './login.controller';
-import { Authentication, HttpRequest, Validator } from './login.protocols';
+import { IAuthentication, HttpRequest, IValidator } from './login.protocols';
 import { InvalidParamError } from '@/presentation/errors';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
@@ -10,8 +10,8 @@ const mockHttpRequest = (): HttpRequest => ({
   }
 });
 
-const makeValidator = (): Validator => {
-  class ValidatorStub implements Validator {
+const makeValidator = (): IValidator => {
+  class ValidatorStub implements IValidator {
     validate(input: any): Error | null {
       return null;
     }
@@ -20,11 +20,11 @@ const makeValidator = (): Validator => {
   return new ValidatorStub();
 };
 
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
+const makeAuthentication = (): IAuthentication => {
+  class AuthenticationStub implements IAuthentication {
     async execute(
-      params: Authentication.Params
-    ): Promise<Authentication.Result> {
+      params: IAuthentication.Params
+    ): Promise<IAuthentication.Result> {
       return {
         accessToken: 'any_token'
       };
@@ -35,8 +35,8 @@ const makeAuthentication = (): Authentication => {
 
 type SutTypes = {
   sut: LoginController;
-  authenticationStub: Authentication;
-  validatorStub: Validator;
+  authenticationStub: IAuthentication;
+  validatorStub: IValidator;
 };
 
 const makeSut = (): SutTypes => {

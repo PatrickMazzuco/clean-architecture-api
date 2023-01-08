@@ -1,7 +1,7 @@
-import { Validator } from '../../protocols/validator';
+import { IValidator } from '../../protocols/validator';
 
-export class CompositeValidator implements Validator {
-  constructor(private readonly validators: Validator[]) {}
+export class CompositeValidator implements IValidator {
+  constructor(private readonly validators: IValidator[]) {}
 
   validate(input: any): Error | null {
     for (const validator of this.validators) {

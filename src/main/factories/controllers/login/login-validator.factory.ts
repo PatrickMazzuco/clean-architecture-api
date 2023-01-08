@@ -4,10 +4,10 @@ import {
   EmailValidator,
   RequiredFieldValidator
 } from '@/presentation/helpers/validators/';
-import { Validator } from '@/presentation/protocols';
+import { IValidator } from '@/presentation/protocols';
 
-export const makeLoginValidator = (): Validator => {
-  const validators: Validator[] = [];
+export const makeLoginValidator = (): IValidator => {
+  const validators: IValidator[] = [];
   for (const field of ['email', 'password']) {
     validators.push(new RequiredFieldValidator(field));
   }

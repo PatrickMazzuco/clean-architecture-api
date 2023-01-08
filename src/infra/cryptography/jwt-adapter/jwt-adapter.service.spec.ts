@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 import { JwtAdapter } from './jwt-adapter.service';
-import { Encrypter } from '@/application/protocols/cryptography/encrypter.service';
+import { IEncrypter } from '@/application/protocols/cryptography/encrypter.service';
 
 const SECRET_KEY = 'secret';
 const TOKEN = 'token';
@@ -10,7 +10,7 @@ jest.mock('jsonwebtoken', () => ({
   sign: jest.fn().mockReturnValue('token')
 }));
 
-const mockParams = (): Encrypter.Params => {
+const mockParams = (): IEncrypter.Params => {
   return { id: 'any_id' };
 };
 

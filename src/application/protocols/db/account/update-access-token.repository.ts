@@ -5,13 +5,13 @@ type Input = {
 
 type Output = void;
 
-export namespace UpdateAccessTokenRepository {
+export namespace IUpdateAccessTokenRepository {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface UpdateAccessTokenRepository {
+export interface IUpdateAccessTokenRepository {
   updateAccessToken: (
-    params: UpdateAccessTokenRepository.Params
-  ) => Promise<UpdateAccessTokenRepository.Result>;
+    params: IUpdateAccessTokenRepository.Params
+  ) => Promise<IUpdateAccessTokenRepository.Result>;
 }

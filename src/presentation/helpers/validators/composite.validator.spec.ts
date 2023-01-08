@@ -1,9 +1,9 @@
-import { Validator } from '../../protocols/validator';
+import { IValidator } from '../../protocols/validator';
 import { CompositeValidator } from './composite.validator';
 import { MissingParamError } from '@/presentation/errors';
 
-const makeValidator = (): Validator => {
-  class ValidatorStub implements Validator {
+const makeValidator = (): IValidator => {
+  class ValidatorStub implements IValidator {
     validate(input: any): Error | null {
       return null;
     }
@@ -13,8 +13,8 @@ const makeValidator = (): Validator => {
 
 type SutTypes = {
   sut: CompositeValidator;
-  validatorStub: Validator;
-  secondValidatorStub: Validator;
+  validatorStub: IValidator;
+  secondValidatorStub: IValidator;
 };
 
 const makeSut = (): SutTypes => {

@@ -8,13 +8,13 @@ type Input = {
 
 type Output = Account;
 
-export namespace AddAccountRepository {
+export namespace IAddAccountRepository {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface AddAccountRepository {
+export interface IAddAccountRepository {
   add: (
-    params: AddAccountRepository.Params
-  ) => Promise<AddAccountRepository.Result>;
+    params: IAddAccountRepository.Params
+  ) => Promise<IAddAccountRepository.Result>;
 }

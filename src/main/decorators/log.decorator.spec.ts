@@ -1,13 +1,13 @@
 import { LogControllerDecorator } from './log.decorator';
-import { LogErrorRepository } from '@/application/protocols/db/log/log-error.repository';
+import { ILogErrorRepository } from '@/application/protocols/db/log/log-error.repository';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
-import { Controller } from '@/presentation/protocols';
+import { IController } from '@/presentation/protocols';
 
-const makeLogErrorRepository = (): LogErrorRepository => {
-  class LogErrorRepositoryStub implements LogErrorRepository {
+const makeLogErrorRepository = (): ILogErrorRepository => {
+  class LogErrorRepositoryStub implements ILogErrorRepository {
     async logError(
-      stack: LogErrorRepository.Params
-    ): Promise<LogErrorRepository.Result> {
+      stack: ILogErrorRepository.Params
+    ): Promise<ILogErrorRepository.Result> {
       await Promise.resolve();
     }
   }
@@ -15,9 +15,9 @@ const makeLogErrorRepository = (): LogErrorRepository => {
   return new LogErrorRepositoryStub();
 };
 
-const makeController = (): Controller => {
-  class ControllerStub implements Controller {
-    async handle(httpRequest: Controller.Params): Promise<Controller.Result> {
+const makeController = (): IController => {
+  class ControllerStub implements IController {
+    async handle(httpRequest: IController.Params): Promise<IController.Result> {
       return HttpResponseFactory.Ok({
         name: httpRequest.body.name,
         email: httpRequest.body.email
@@ -30,8 +30,8 @@ const makeController = (): Controller => {
 
 type SutTypes = {
   sut: LogControllerDecorator;
-  controllerStub: Controller;
-  logErrorRepository: LogErrorRepository;
+  controllerStub: IController;
+  logErrorRepository: ILogErrorRepository;
 };
 
 const makeSut = (): SutTypes => {

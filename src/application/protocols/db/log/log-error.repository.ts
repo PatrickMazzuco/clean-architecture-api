@@ -4,13 +4,13 @@ type Input = {
 
 type Output = void;
 
-export namespace LogErrorRepository {
+export namespace ILogErrorRepository {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface LogErrorRepository {
+export interface ILogErrorRepository {
   logError: (
-    params: LogErrorRepository.Params
-  ) => Promise<LogErrorRepository.Result>;
+    params: ILogErrorRepository.Params
+  ) => Promise<ILogErrorRepository.Result>;
 }

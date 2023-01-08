@@ -1,6 +1,6 @@
 import { EmailValidator } from './email.validator';
 import { InvalidParamError } from '@/presentation/errors';
-import { EmailValidator as EmailValidatorService } from '@/presentation/protocols/email-validator/email-validator';
+import { IEmailValidator as EmailValidatorService } from '@/presentation/protocols/email-validator/email-validator';
 
 const makeEmailValidatorService = (): EmailValidatorService => {
   class EmailValidatorServiceStub implements EmailValidatorService {

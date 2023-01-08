@@ -1,22 +1,22 @@
 import {
-  Authentication,
-  FindAccountByEmailRepository,
-  HashCompare,
-  Encrypter,
-  UpdateAccessTokenRepository
+  IAuthentication,
+  IFindAccountByEmailRepository,
+  IHashCompare,
+  IEncrypter,
+  IUpdateAccessTokenRepository
 } from './authentication.protocols';
 
-export class AuthenticationUseCase implements Authentication {
+export class AuthenticationUseCase implements IAuthentication {
   constructor(
-    private readonly findAccountByEmailRepository: FindAccountByEmailRepository,
-    private readonly hashCompare: HashCompare,
-    private readonly encrypter: Encrypter,
-    private readonly updateAccessTokenRepository: UpdateAccessTokenRepository
+    private readonly findAccountByEmailRepository: IFindAccountByEmailRepository,
+    private readonly hashCompare: IHashCompare,
+    private readonly encrypter: IEncrypter,
+    private readonly updateAccessTokenRepository: IUpdateAccessTokenRepository
   ) {}
 
   async execute(
-    authData: Authentication.Params
-  ): Promise<Authentication.Result> {
+    authData: IAuthentication.Params
+  ): Promise<IAuthentication.Result> {
     const existingAccount = await this.findAccountByEmailRepository.findByEmail(
       authData.email
     );

@@ -3,19 +3,19 @@ import { ObjectId } from 'mongodb';
 import { MongoHelper } from '../helpers/mongodb.helper';
 import { AccountMongo } from '../models/Account.model';
 import { AccountMapper } from './account.mapper';
-import { AddAccountRepository } from '@/application/protocols/db/account/add-account.repository';
-import { FindAccountByEmailRepository } from '@/application/protocols/db/account/find-account-by-email.repository';
-import { UpdateAccessTokenRepository } from '@/application/protocols/db/account/update-access-token.repository';
+import { IAddAccountRepository } from '@/application/protocols/db/account/add-account.repository';
+import { IFindAccountByEmailRepository } from '@/application/protocols/db/account/find-account-by-email.repository';
+import { IUpdateAccessTokenRepository } from '@/application/protocols/db/account/update-access-token.repository';
 
 export class AccountMongoRepository
   implements
-    AddAccountRepository,
-    FindAccountByEmailRepository,
-    UpdateAccessTokenRepository
+    IAddAccountRepository,
+    IFindAccountByEmailRepository,
+    IUpdateAccessTokenRepository
 {
   async add(
-    accountData: AddAccountRepository.Params
-  ): Promise<AddAccountRepository.Result> {
+    accountData: IAddAccountRepository.Params
+  ): Promise<IAddAccountRepository.Result> {
     const accountCollection = MongoHelper.getCollection('accounts');
     const result = await accountCollection.insertOne(accountData);
     const id = result.insertedId;
@@ -25,7 +25,7 @@ export class AccountMongoRepository
 
   async findByEmail(
     email: string
-  ): Promise<FindAccountByEmailRepository.Result> {
+  ): Promise<IFindAccountByEmailRepository.Result> {
     const accountCollection = MongoHelper.getCollection('accounts');
     const result = await accountCollection.findOne<AccountMongo>({
       email
@@ -39,8 +39,8 @@ export class AccountMongoRepository
   }
 
   async updateAccessToken(
-    params: UpdateAccessTokenRepository.Params
-  ): Promise<UpdateAccessTokenRepository.Result> {
+    params: IUpdateAccessTokenRepository.Params
+  ): Promise<IUpdateAccessTokenRepository.Result> {
     const accountCollection = MongoHelper.getCollection('accounts');
     await accountCollection.updateOne(
       { _id: new ObjectId(params.id) },

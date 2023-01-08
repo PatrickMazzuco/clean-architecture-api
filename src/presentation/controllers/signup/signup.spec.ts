@@ -1,14 +1,14 @@
 import { InternalServerError, InvalidParamError } from '../../errors';
 import { SignUpController } from './signup.controller';
 import {
-  AddAccount,
-  Authentication,
+  IAddAccount,
+  IAuthentication,
   HttpRequest,
-  Validator
+  IValidator
 } from './signup.protocols';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
-const mockAccount = (): AddAccount.Result => ({
+const mockAccount = (): IAddAccount.Result => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'any_name@email.com',
@@ -27,8 +27,8 @@ const mockHttpRequest = (): HttpRequest => {
   };
 };
 
-const makeValidator = (): Validator => {
-  class ValidatorStub implements Validator {
+const makeValidator = (): IValidator => {
+  class ValidatorStub implements IValidator {
     validate(input: any): Error | null {
       return null;
     }
@@ -37,9 +37,9 @@ const makeValidator = (): Validator => {
   return new ValidatorStub();
 };
 
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async execute(params: AddAccount.Params): Promise<AddAccount.Result> {
+const makeAddAccount = (): IAddAccount => {
+  class AddAccountStub implements IAddAccount {
+    async execute(params: IAddAccount.Params): Promise<IAddAccount.Result> {
       const fakeAccount = mockAccount();
 
       return await new Promise((resolve) => resolve(fakeAccount));
@@ -49,11 +49,11 @@ const makeAddAccount = (): AddAccount => {
   return new AddAccountStub();
 };
 
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
+const makeAuthentication = (): IAuthentication => {
+  class AuthenticationStub implements IAuthentication {
     async execute(
-      params: Authentication.Params
-    ): Promise<Authentication.Result> {
+      params: IAuthentication.Params
+    ): Promise<IAuthentication.Result> {
       return {
         accessToken: 'any_token'
       };
@@ -64,9 +64,9 @@ const makeAuthentication = (): Authentication => {
 
 type SutTypes = {
   sut: SignUpController;
-  addAccountStub: AddAccount;
-  validatorStub: Validator;
-  authenticationStub: Authentication;
+  addAccountStub: IAddAccount;
+  validatorStub: IValidator;
+  authenticationStub: IAuthentication;
 };
 
 const makeSut = (): SutTypes => {

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 
-import { Controller, HttpRequest } from '@/presentation/protocols';
+import { IController, HttpRequest } from '@/presentation/protocols';
 
 export class ExpressRouteAdapter {
   static adapt(
-    controller: Controller
+    controller: IController
   ): (req: Request, res: Response) => Promise<void> {
     return async (req: Request, res: Response) => {
       const httpRequest: HttpRequest = {

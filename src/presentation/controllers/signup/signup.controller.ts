@@ -1,18 +1,18 @@
-import { AddAccount } from '../../../domain/usecases/add-account.usecase';
+import { IAddAccount } from '../../../domain/usecases/add-account.usecase';
 import { HttpResponseFactory } from '../../helpers/http/http.helper';
 import {
-  Authentication,
-  Controller,
+  IAuthentication,
+  IController,
   HttpRequest,
   HttpResponse,
-  Validator
+  IValidator
 } from './signup.protocols';
 
-export class SignUpController implements Controller {
+export class SignUpController implements IController {
   constructor(
-    private readonly addAccount: AddAccount,
-    private readonly validator: Validator,
-    private readonly authentication: Authentication
+    private readonly addAccount: IAddAccount,
+    private readonly validator: IValidator,
+    private readonly authentication: IAuthentication
   ) {}
 
   async handle(request: HttpRequest): Promise<HttpResponse> {

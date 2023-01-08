@@ -1,12 +1,13 @@
 import {
-  AddAccount,
-  AddAccountRepository,
-  Hasher
+  Account,
+  IAddAccount,
+  IAddAccountRepository,
+  IHasher
 } from './add-account.protocols';
 import { AddAccountUsecase } from './add-account.usecase';
 
-const makeHasher = (): Hasher => {
-  class HasherStub implements Hasher {
+const makeHasher = (): IHasher => {
+  class HasherStub implements IHasher {
     async hash(value: string): Promise<string> {
       return await new Promise((resolve) => resolve('hashed_password'));
     }
@@ -16,11 +17,28 @@ const makeHasher = (): Hasher => {
   return hasherStub;
 };
 
-const makeAddAccountRepository = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
+const mockAccount = (): Account => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@email.com',
+  password: 'hashed_password'
+});
+
+const mockAccountData = (): IAddAccount.Params => {
+  const { name, email } = mockAccount();
+
+  return {
+    name,
+    email,
+    password: 'valid_password'
+  };
+};
+
+const makeAddAccountRepository = (): IAddAccountRepository => {
+  class AddAccountRepositoryStub implements IAddAccountRepository {
     async add(
-      accountData: AddAccountRepository.Params
-    ): Promise<AddAccountRepository.Result> {
+      accountData: IAddAccountRepository.Params
+    ): Promise<IAddAccountRepository.Result> {
       const fakeAccount = {
         id: 'any_id',
         name: accountData.name,
@@ -38,8 +56,8 @@ const makeAddAccountRepository = (): AddAccountRepository => {
 
 type SutTypes = {
   sut: AddAccountUsecase;
-  hasherStub: Hasher;
-  addAccountRepositoryStub: AddAccountRepository;
+  hasherStub: IHasher;
+  addAccountRepositoryStub: IAddAccountRepository;
 };
 
 const makeSut = (): SutTypes => {
@@ -59,11 +77,7 @@ describe('AddAccount Usecase', () => {
     const { sut, hasherStub } = makeSut();
     const hasherSpy = jest.spyOn(hasherStub, 'hash');
 
-    const accountData: AddAccount.Params = {
-      name: 'any_name',
-      email: 'valid_email@email.com',
-      password: 'any_password'
-    };
+    const accountData = mockAccountData();
 
     await sut.execute(accountData);
     expect(hasherSpy).toBeCalledWith(accountData.password);
@@ -73,11 +87,7 @@ describe('AddAccount Usecase', () => {
     const { sut, hasherStub } = makeSut();
     jest.spyOn(hasherStub, 'hash').mockRejectedValueOnce(new Error());
 
-    const accountData: AddAccount.Params = {
-      name: 'any_name',
-      email: 'valid_email@email.com',
-      password: 'any_password'
-    };
+    const accountData = mockAccountData();
 
     const promise = sut.execute(accountData);
     await expect(promise).rejects.toThrow();
@@ -87,11 +97,7 @@ describe('AddAccount Usecase', () => {
     const { sut, addAccountRepositoryStub } = makeSut();
     const addAccountSpy = jest.spyOn(addAccountRepositoryStub, 'add');
 
-    const accountData: AddAccount.Params = {
-      name: 'any_name',
-      email: 'valid_email@email.com',
-      password: 'any_password'
-    };
+    const accountData = mockAccountData();
 
     await sut.execute(accountData);
     expect(addAccountSpy).toBeCalledWith({
@@ -107,11 +113,7 @@ describe('AddAccount Usecase', () => {
       .spyOn(addAccountRepositoryStub, 'add')
       .mockRejectedValueOnce(new Error());
 
-    const accountData: AddAccount.Params = {
-      name: 'any_name',
-      email: 'valid_email@email.com',
-      password: 'any_password'
-    };
+    const accountData = mockAccountData();
 
     const promise = sut.execute(accountData);
     await expect(promise).rejects.toThrow();
@@ -119,11 +121,7 @@ describe('AddAccount Usecase', () => {
 
   it('should return an account on success', async () => {
     const { sut } = makeSut();
-    const accountData: AddAccount.Params = {
-      name: 'any_name',
-      email: 'valid_email@email.com',
-      password: 'any_password'
-    };
+    const accountData = mockAccountData();
 
     const account = await sut.execute(accountData);
 

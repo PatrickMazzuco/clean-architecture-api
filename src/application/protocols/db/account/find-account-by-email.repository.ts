@@ -2,10 +2,10 @@ import { Account } from '@/domain/entities';
 
 type Output = Account | null;
 
-export namespace FindAccountByEmailRepository {
+export namespace IFindAccountByEmailRepository {
   export type Result = Output;
 }
 
-export interface FindAccountByEmailRepository {
-  findByEmail: (email: string) => Promise<FindAccountByEmailRepository.Result>;
+export interface IFindAccountByEmailRepository {
+  findByEmail: (email: string) => Promise<IFindAccountByEmailRepository.Result>;
 }

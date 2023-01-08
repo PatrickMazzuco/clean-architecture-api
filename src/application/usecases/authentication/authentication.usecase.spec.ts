@@ -1,10 +1,10 @@
 import {
   Account,
-  Authentication,
-  FindAccountByEmailRepository,
-  HashCompare,
-  Encrypter,
-  UpdateAccessTokenRepository
+  IAuthentication,
+  IFindAccountByEmailRepository,
+  IHashCompare,
+  IEncrypter,
+  IUpdateAccessTokenRepository
 } from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
 
@@ -15,7 +15,7 @@ const mockAccount = (): Account => ({
   password: 'hashed_password'
 });
 
-const mockAuthData = (): Authentication.Params => {
+const mockAuthData = (): IAuthentication.Params => {
   const { email } = mockAccount();
 
   return {
@@ -24,14 +24,16 @@ const mockAuthData = (): Authentication.Params => {
   };
 };
 
-const mockResponse = (): Authentication.Result => ({
+const mockResponse = (): IAuthentication.Result => ({
   accessToken: 'valid_token'
 });
 
-const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
-  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
+const makeUpdateAccessTokenRepository = (): IUpdateAccessTokenRepository => {
+  class UpdateAccessTokenRepositoryStub
+    implements IUpdateAccessTokenRepository
+  {
     async updateAccessToken(
-      params: UpdateAccessTokenRepository.Params
+      params: IUpdateAccessTokenRepository.Params
     ): Promise<void> {
       return await new Promise((resolve) => resolve());
     }
@@ -40,9 +42,9 @@ const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
   return new UpdateAccessTokenRepositoryStub();
 };
 
-const makeEncrypter = (): Encrypter => {
-  class EncrypterStub implements Encrypter {
-    async encrypt(params: Encrypter.Params): Promise<Encrypter.Result> {
+const makeEncrypter = (): IEncrypter => {
+  class EncrypterStub implements IEncrypter {
+    async encrypt(params: IEncrypter.Params): Promise<IEncrypter.Result> {
       return await new Promise((resolve) =>
         resolve(mockResponse().accessToken as string)
       );
@@ -52,12 +54,12 @@ const makeEncrypter = (): Encrypter => {
   return new EncrypterStub();
 };
 
-const makeHashCompare = (): HashCompare => {
-  class HashCompareStub implements HashCompare {
+const makeHashCompare = (): IHashCompare => {
+  class HashCompareStub implements IHashCompare {
     async compare({
       value,
       hash
-    }: HashCompare.Params): Promise<HashCompare.Result> {
+    }: IHashCompare.Params): Promise<IHashCompare.Result> {
       return await new Promise((resolve) => resolve(true));
     }
   }
@@ -65,9 +67,9 @@ const makeHashCompare = (): HashCompare => {
   return new HashCompareStub();
 };
 
-const makeFindAccountByEmailRepository = (): FindAccountByEmailRepository => {
+const makeFindAccountByEmailRepository = (): IFindAccountByEmailRepository => {
   class FindAccountByEmailRepositoryStub
-    implements FindAccountByEmailRepository
+    implements IFindAccountByEmailRepository
   {
     async findByEmail(email: string): Promise<Account | null> {
       return await new Promise((resolve) => resolve(mockAccount()));
@@ -79,10 +81,10 @@ const makeFindAccountByEmailRepository = (): FindAccountByEmailRepository => {
 
 type SutTypes = {
   sut: AuthenticationUseCase;
-  findAccountByEmailRepositoryStub: FindAccountByEmailRepository;
-  hashCompareStub: HashCompare;
-  encrypterStub: Encrypter;
-  updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
+  findAccountByEmailRepositoryStub: IFindAccountByEmailRepository;
+  hashCompareStub: IHashCompare;
+  encrypterStub: IEncrypter;
+  updateAccessTokenRepositoryStub: IUpdateAccessTokenRepository;
 };
 
 const makeSut = (): SutTypes => {

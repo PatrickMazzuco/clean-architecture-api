@@ -3,9 +3,9 @@ import { makeAddAccountUsecase } from '../../usecases/add-account/add-account-us
 import { makeAuthenticationUsecase } from '../../usecases/authentication/authentication-usecase.factory';
 import { makeSignUpValidator } from './signup-validator.factory';
 import { SignUpController } from '@/presentation/controllers/signup/signup.controller';
-import { Controller } from '@/presentation/protocols';
+import { IController } from '@/presentation/protocols';
 
-export const makeSignUpController = (): Controller => {
+export const makeSignUpController = (): IController => {
   const addAccount = makeAddAccountUsecase();
   const authenticationUseCase = makeAuthenticationUsecase();
   const signUpValidator = makeSignUpValidator();

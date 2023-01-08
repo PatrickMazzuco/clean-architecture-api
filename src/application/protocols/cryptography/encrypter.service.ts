@@ -4,11 +4,11 @@ type Input = {
 
 type Output = string;
 
-export namespace Encrypter {
+export namespace IEncrypter {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface Encrypter {
-  encrypt: (params: Encrypter.Params) => Promise<Encrypter.Result>;
+export interface IEncrypter {
+  encrypt: (params: IEncrypter.Params) => Promise<IEncrypter.Result>;
 }

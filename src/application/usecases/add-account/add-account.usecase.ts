@@ -1,20 +1,20 @@
 import {
-  AddAccount,
-  AddAccountRepository,
-  Hasher
+  IAddAccount,
+  IAddAccountRepository,
+  IHasher
 } from './add-account.protocols';
 
-export class AddAccountUsecase implements AddAccount {
+export class AddAccountUsecase implements IAddAccount {
   constructor(
-    private readonly hasher: Hasher,
-    private readonly addAccountRepository: AddAccountRepository
+    private readonly hasher: IHasher,
+    private readonly addAccountRepository: IAddAccountRepository
   ) {}
 
   async execute({
     name,
     email,
     password
-  }: AddAccount.Params): Promise<AddAccount.Result> {
+  }: IAddAccount.Params): Promise<IAddAccount.Result> {
     const hashedPassword = await this.hasher.hash(password);
 
     return await this.addAccountRepository.add({

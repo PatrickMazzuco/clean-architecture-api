@@ -7,11 +7,11 @@ type Output = {
   accessToken: string | null;
 };
 
-export namespace Authentication {
+export namespace IAuthentication {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface Authentication {
-  execute: (params: Authentication.Params) => Promise<Authentication.Result>;
+export interface IAuthentication {
+  execute: (params: IAuthentication.Params) => Promise<IAuthentication.Result>;
 }

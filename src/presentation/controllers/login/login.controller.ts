@@ -1,13 +1,13 @@
-import { Authentication, Controller, Validator } from './login.protocols';
+import { IAuthentication, IController, IValidator } from './login.protocols';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
-export class LoginController implements Controller {
+export class LoginController implements IController {
   constructor(
-    private readonly authentication: Authentication,
-    private readonly validator: Validator
+    private readonly authentication: IAuthentication,
+    private readonly validator: IValidator
   ) {}
 
-  async handle(request: Controller.Params): Promise<Controller.Result> {
+  async handle(request: IController.Params): Promise<IController.Result> {
     try {
       const error = this.validator.validate(request.body);
 

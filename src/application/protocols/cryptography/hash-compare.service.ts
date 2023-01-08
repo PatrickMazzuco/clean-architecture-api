@@ -5,11 +5,11 @@ type Input = {
 
 type Output = boolean;
 
-export namespace HashCompare {
+export namespace IHashCompare {
   export type Params = Input;
   export type Result = Output;
 }
 
-export interface HashCompare {
-  compare: (params: HashCompare.Params) => Promise<HashCompare.Result>;
+export interface IHashCompare {
+  compare: (params: IHashCompare.Params) => Promise<IHashCompare.Result>;
 }

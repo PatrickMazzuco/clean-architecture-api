@@ -2,9 +2,9 @@ import { makeLogControllerDecorator } from '../../decorators/log-controller-deco
 import { makeAuthenticationUsecase } from '../../usecases/authentication/authentication-usecase.factory';
 import { makeLoginValidator } from './login-validator.factory';
 import { LoginController } from '@/presentation/controllers/login/login.controller';
-import { Controller } from '@/presentation/protocols';
+import { IController } from '@/presentation/protocols';
 
-export const makeLoginController = (): Controller => {
+export const makeLoginController = (): IController => {
   const authenticationUseCase = makeAuthenticationUsecase();
   const loginValidator = makeLoginValidator();
 
