@@ -6,9 +6,10 @@ import {
   HttpRequest,
   IValidator
 } from './signup.protocols';
+import { Account } from '@/domain/entities';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
-const mockAccount = (): IAddAccount.Result => ({
+const mockAccount = (): Account => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'any_name@email.com',

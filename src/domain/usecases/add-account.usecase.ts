@@ -6,7 +6,7 @@ type Input = {
   password: string;
 };
 
-type Output = Account;
+type Output = Account | null;
 
 export namespace IAddAccount {
   export type Params = Input;

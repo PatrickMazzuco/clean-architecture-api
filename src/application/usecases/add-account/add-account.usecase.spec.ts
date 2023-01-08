@@ -2,6 +2,7 @@ import {
   Account,
   IAddAccount,
   IAddAccountRepository,
+  IFindAccountByEmailRepository,
   IHasher
 } from './add-account.protocols';
 import { AddAccountUsecase } from './add-account.usecase';
@@ -54,21 +55,40 @@ const makeAddAccountRepository = (): IAddAccountRepository => {
   return addAccountRepositoryStub;
 };
 
+const makeFindAccountByEmailRepository = (): IFindAccountByEmailRepository => {
+  class FindAccountByEmailRepositoryStub
+    implements IFindAccountByEmailRepository
+  {
+    async findByEmail(email: string): Promise<Account | null> {
+      return await new Promise((resolve) => resolve(null));
+    }
+  }
+
+  return new FindAccountByEmailRepositoryStub();
+};
+
 type SutTypes = {
   sut: AddAccountUsecase;
   hasherStub: IHasher;
   addAccountRepositoryStub: IAddAccountRepository;
+  findAccountByEmailRepositoryStub: IFindAccountByEmailRepository;
 };
 
 const makeSut = (): SutTypes => {
   const hasherStub = makeHasher();
   const addAccountRepositoryStub = makeAddAccountRepository();
-  const sut = new AddAccountUsecase(hasherStub, addAccountRepositoryStub);
+  const findAccountByEmailRepositoryStub = makeFindAccountByEmailRepository();
+  const sut = new AddAccountUsecase(
+    hasherStub,
+    addAccountRepositoryStub,
+    findAccountByEmailRepositoryStub
+  );
 
   return {
     sut,
     hasherStub,
-    addAccountRepositoryStub
+    addAccountRepositoryStub,
+    findAccountByEmailRepositoryStub
   };
 };
 
@@ -117,6 +137,46 @@ describe('AddAccount Usecase', () => {
 
     const promise = sut.execute(accountData);
     await expect(promise).rejects.toThrow();
+  });
+
+  it('should call FindAccountByEmailRepository with correct email', async () => {
+    const { sut, findAccountByEmailRepositoryStub } = makeSut();
+    const accountData = mockAccountData();
+
+    const findAccountSpy = jest.spyOn(
+      findAccountByEmailRepositoryStub,
+      'findByEmail'
+    );
+    await sut.execute(accountData);
+
+    expect(findAccountSpy).toHaveBeenCalledWith(accountData.email);
+  });
+
+  it('should throw if FindAccountByEmailRepository throws an error', async () => {
+    const { sut, findAccountByEmailRepositoryStub } = makeSut();
+    const accountData = mockAccountData();
+
+    jest
+      .spyOn(findAccountByEmailRepositoryStub, 'findByEmail')
+      .mockRejectedValueOnce(new Error());
+
+    const promise = sut.execute(accountData);
+
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('should return null if FindAccountByEmailRepository returns an account', async () => {
+    const { sut, findAccountByEmailRepositoryStub } = makeSut();
+    const accountData = mockAccountData();
+    const account = mockAccount();
+
+    jest
+      .spyOn(findAccountByEmailRepositoryStub, 'findByEmail')
+      .mockResolvedValueOnce(account);
+
+    const response = await sut.execute(accountData);
+
+    expect(response).toBeNull();
   });
 
   it('should return an account on success', async () => {

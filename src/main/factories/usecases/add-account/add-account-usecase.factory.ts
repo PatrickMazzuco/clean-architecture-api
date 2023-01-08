@@ -6,7 +6,11 @@ import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/ac
 export const makeAddAccountUsecase = (): IAddAccount => {
   const bcryptAdapter = new BcryptAdapter();
   const accountRepository = new AccountMongoRepository();
-  const addAccount = new AddAccountUsecase(bcryptAdapter, accountRepository);
+  const addAccount = new AddAccountUsecase(
+    bcryptAdapter,
+    accountRepository,
+    accountRepository
+  );
 
   return addAccount;
 };
