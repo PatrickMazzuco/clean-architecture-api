@@ -1,4 +1,4 @@
-import { AddAccountUsecase } from '@/application/usecases/add-account/add-account.usecase';
+import { AddAccountUsecase } from '@/application/usecases/sessions/add-account/add-account.usecase';
 import { IAddAccount } from '@/domain/usecases/sessions/add-account.usecase';
 import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter/bcrypt-adapter.service';
 import { AccountMongoRepository } from '@/infra/db/mongodb/account-repository/account.repository';

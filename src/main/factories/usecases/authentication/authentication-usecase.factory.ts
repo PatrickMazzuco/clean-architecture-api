@@ -1,4 +1,4 @@
-import { AuthenticationUseCase } from '@/application/usecases/authentication/authentication.usecase';
+import { AuthenticationUseCase } from '@/application/usecases/sessions/authentication/authentication.usecase';
 import { IAuthentication } from '@/domain/usecases/sessions/authentication.usecase';
 import { BcryptAdapter } from '@/infra/cryptography/bcrypt-adapter/bcrypt-adapter.service';
 import { JwtAdapter } from '@/infra/cryptography/jwt-adapter/jwt-adapter.service';
