@@ -79,6 +79,40 @@ describe('Account Mongo Repository', () => {
     expect(foundAccount).toBeNull();
   });
 
+  it('should return an account on findById success', async () => {
+    const sut = makeSut();
+    const accountData = {
+      name: 'any_name',
+      email: 'any_email@email.com',
+      password: 'any_password'
+    };
+
+    const accountCollection = MongoHelper.getCollection('accounts');
+    const result = await accountCollection.insertOne(accountData);
+    const id = result.insertedId;
+
+    const foundAccount = await sut.findById(id.toString());
+
+    expect(foundAccount).toBeTruthy();
+    expect(foundAccount).toEqual(
+      expect.objectContaining({
+        id: expect.any(String),
+        name: accountData.name,
+        email: accountData.email,
+        password: accountData.password
+      })
+    );
+  });
+
+  it("should return null on findById if user doesn't exist", async () => {
+    const sut = makeSut();
+    const mockId = '5f9f1c9b9c9c9c9c9c9c9c9c';
+
+    const foundAccount = await sut.findById(mockId);
+
+    expect(foundAccount).toBeNull();
+  });
+
   it('should update the account accessToken on updateAccessToken success', async () => {
     const sut = makeSut();
     const accountData = {

@@ -5,13 +5,15 @@ import { AccountMongo } from '../models/account.model';
 import { AccountMapper } from './account.mapper';
 import { IAddAccountRepository } from '@/application/protocols/db/account/add-account.repository';
 import { IFindAccountByEmailRepository } from '@/application/protocols/db/account/find-account-by-email.repository';
+import { IFindAccountByIdRepository } from '@/application/protocols/db/account/find-account-by-id.repository';
 import { IUpdateAccessTokenRepository } from '@/application/protocols/db/account/update-access-token.repository';
 
 export class AccountMongoRepository
   implements
     IAddAccountRepository,
     IFindAccountByEmailRepository,
-    IUpdateAccessTokenRepository
+    IUpdateAccessTokenRepository,
+    IFindAccountByIdRepository
 {
   async add(
     accountData: IAddAccountRepository.Params
@@ -29,6 +31,19 @@ export class AccountMongoRepository
     const accountCollection = MongoHelper.getCollection('accounts');
     const result = await accountCollection.findOne<AccountMongo>({
       email
+    });
+
+    if (!result) {
+      return null;
+    }
+
+    return AccountMapper.toEntity(result);
+  }
+
+  async findById(id: string): Promise<IFindAccountByIdRepository.Result> {
+    const accountCollection = MongoHelper.getCollection('accounts');
+    const result = await accountCollection.findOne<AccountMongo>({
+      _id: new ObjectId(id)
     });
 
     if (!result) {
