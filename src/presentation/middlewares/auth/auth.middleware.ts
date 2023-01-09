@@ -1,8 +1,11 @@
-import { AccessDeniedError } from '../errors';
-import { HttpResponseFactory } from '../helpers/http/http.helper';
-import { HttpRequest, HttpResponse } from '../protocols';
-import { IMiddleware } from '../protocols/middleware';
-import { IFindAccountByToken } from '@/domain/usecases/sessions/find-account-by-token.usecase';
+import {
+  IFindAccountByToken,
+  IMiddleware,
+  HttpRequest,
+  HttpResponse,
+  HttpResponseFactory,
+  AccessDeniedError
+} from './auth-middleware.protocols';
 
 type AuthMiddlewareConfig = {
   findAccountByToken: IFindAccountByToken;

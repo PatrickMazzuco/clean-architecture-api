@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { AccessDeniedError } from '../errors';
-import { HttpResponseFactory } from '../helpers/http/http.helper';
-import { HttpRequest } from '../protocols';
+
+import {
+  HttpRequest,
+  IFindAccountByToken,
+  HttpResponseFactory,
+  AccessDeniedError
+} from './auth-middleware.protocols';
 import { AuthMiddleware } from './auth.middleware';
-import { IFindAccountByToken } from '@/domain/usecases/sessions/find-account-by-token.usecase';
 
 const mockHttpRequest = (): HttpRequest => ({
   headers: {
