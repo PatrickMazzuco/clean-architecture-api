@@ -6,10 +6,8 @@ import { IEncrypter } from '@/application/protocols/cryptography/encrypter.servi
 const SECRET_KEY = 'secret';
 const TOKEN = 'token';
 
-jest.mock('jsonwebtoken', () => ({
-  sign: jest.fn().mockReturnValue('token'),
-  verify: jest.fn().mockReturnValue({ id: 'any_id' })
-}));
+jest.spyOn(jwt, 'sign').mockImplementation(() => TOKEN);
+jest.spyOn(jwt, 'verify').mockImplementation(() => ({ id: 'any_id' }));
 
 const mockTokenData = (): IEncrypter.Params => {
   return { id: 'any_id' };
@@ -66,7 +64,18 @@ describe('JWT Adapter', () => {
       expect(token).toEqual(params);
     });
 
-    it('should throw if jwt verify throws', async () => {
+    it('should return null if jwt verify throws any jwt error', async () => {
+      const sut = makeSut();
+
+      jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {
+        throw new jwt.JsonWebTokenError('any_error');
+      });
+
+      const token = await sut.decrypt(TOKEN);
+      expect(token).toBeNull();
+    });
+
+    it('should throw if jwt verify throws an unexpected error', async () => {
       const sut = makeSut();
 
       jest.spyOn(jwt, 'verify').mockImplementationOnce(() => {

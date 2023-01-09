@@ -2,7 +2,7 @@ type Input = string;
 
 type Output = {
   id: string;
-};
+} | null;
 
 export namespace IDecrypter {
   export type Params = Input;

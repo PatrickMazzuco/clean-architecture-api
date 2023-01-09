@@ -20,7 +20,16 @@ export class JwtAdapter implements IEncrypter, IDecrypter {
   }
 
   async decrypt(params: IDecrypter.Params): Promise<IDecrypter.Result> {
-    const value = jwt.verify(params, this.config.secret);
-    return value as IDecrypter.Result;
+    try {
+      const value = jwt.verify(params, this.config.secret);
+      return value as IDecrypter.Result;
+    } catch (error) {
+      console.log(error);
+      if (error instanceof jwt.JsonWebTokenError) {
+        return null;
+      }
+
+      throw error;
+    }
   }
 }

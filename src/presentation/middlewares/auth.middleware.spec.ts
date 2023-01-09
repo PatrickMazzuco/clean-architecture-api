@@ -1,16 +1,45 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { AccessDeniedError } from '../errors';
 import { HttpResponseFactory } from '../helpers/http/http.helper';
 import { HttpRequest } from '../protocols';
 import { AuthMiddleware } from './auth.middleware';
+import { IFindAccountByToken } from '@/domain/usecases/sessions/find-account-by-token.usecase';
+
+const mockHttpRequest = (): HttpRequest => ({
+  headers: {
+    Authorization: 'any_token'
+  }
+});
+
+const mockAccount = (): IFindAccountByToken.Result => ({
+  id: 'valid_id',
+  name: 'valid_name',
+  email: 'valid_email@email.com',
+  password: 'hashed_password'
+});
+
+const makeFindAccountByTokenStub = (): IFindAccountByToken => {
+  class FindAccountByTokenStub implements IFindAccountByToken {
+    async execute(
+      params: IFindAccountByToken.Params
+    ): Promise<IFindAccountByToken.Result> {
+      return await new Promise((resolve) => resolve(mockAccount()));
+    }
+  }
+  return new FindAccountByTokenStub();
+};
 
 type SutTypes = {
   sut: AuthMiddleware;
+  findAccountByToken: IFindAccountByToken;
 };
 
 const makeSut = (): SutTypes => {
-  const sut = new AuthMiddleware();
+  const findAccountByToken = makeFindAccountByTokenStub();
+  const sut = new AuthMiddleware(findAccountByToken);
   return {
-    sut
+    sut,
+    findAccountByToken
   };
 };
 
@@ -24,6 +53,51 @@ describe('Auth Middleware', () => {
     const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(
       HttpResponseFactory.ForbiddenError(new AccessDeniedError())
+    );
+  });
+
+  it('should call FindAccountByToken with correct values', async () => {
+    const { sut, findAccountByToken } = makeSut();
+    const httpRequest = mockHttpRequest();
+
+    const decryptSpy = jest.spyOn(findAccountByToken, 'execute');
+    await sut.handle(httpRequest);
+    expect(decryptSpy).toHaveBeenCalledWith({
+      accessToken: httpRequest.headers.Authorization
+    });
+  });
+
+  it('should return 403 if FindAccountByToken returns null', async () => {
+    const { sut, findAccountByToken } = makeSut();
+    jest.spyOn(findAccountByToken, 'execute').mockResolvedValueOnce(null);
+
+    const httpResponse = await sut.handle(mockHttpRequest());
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.ForbiddenError(new AccessDeniedError())
+    );
+  });
+
+  it('should return 500 if FindAccountByToken throws', async () => {
+    const { sut, findAccountByToken } = makeSut();
+    jest.spyOn(findAccountByToken, 'execute').mockImplementationOnce(() => {
+      throw new Error();
+    });
+
+    const httpResponse = await sut.handle(mockHttpRequest());
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.InternalServerError(new Error())
+    );
+  });
+
+  it('should return 200 if FindAccountByToken returns an account', async () => {
+    const { sut } = makeSut();
+    const httpResponse = await sut.handle(mockHttpRequest());
+    const account = mockAccount();
+
+    expect(httpResponse).toEqual(
+      HttpResponseFactory.Ok({
+        accountId: account!.id
+      })
     );
   });
 });
