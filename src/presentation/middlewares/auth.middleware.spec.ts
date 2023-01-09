@@ -34,9 +34,13 @@ type SutTypes = {
   findAccountByToken: IFindAccountByToken;
 };
 
-const makeSut = (): SutTypes => {
+const makeSut = (role: string = 'role'): SutTypes => {
   const findAccountByToken = makeFindAccountByTokenStub();
-  const sut = new AuthMiddleware(findAccountByToken);
+  const sut = new AuthMiddleware({
+    findAccountByToken,
+    role
+  });
+
   return {
     sut,
     findAccountByToken
@@ -63,7 +67,8 @@ describe('Auth Middleware', () => {
     const decryptSpy = jest.spyOn(findAccountByToken, 'execute');
     await sut.handle(httpRequest);
     expect(decryptSpy).toHaveBeenCalledWith({
-      accessToken: httpRequest.headers.Authorization
+      accessToken: httpRequest.headers.Authorization,
+      role: 'role'
     });
   });
 

@@ -4,8 +4,23 @@ import { HttpRequest, HttpResponse } from '../protocols';
 import { IMiddleware } from '../protocols/middleware';
 import { IFindAccountByToken } from '@/domain/usecases/sessions/find-account-by-token.usecase';
 
+type AuthMiddlewareConfig = {
+  findAccountByToken: IFindAccountByToken;
+  role?: string;
+};
+
+export namespace AuthMiddleware {
+  export type Config = AuthMiddlewareConfig;
+}
+
 export class AuthMiddleware implements IMiddleware {
-  constructor(private readonly findAcccountByToken: IFindAccountByToken) {}
+  private readonly findAcccountByToken: IFindAccountByToken;
+  private readonly role?: string;
+
+  constructor(config: AuthMiddleware.Config) {
+    this.findAcccountByToken = config.findAccountByToken;
+    this.role = config.role;
+  }
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
@@ -16,7 +31,8 @@ export class AuthMiddleware implements IMiddleware {
       }
 
       const account = await this.findAcccountByToken.execute({
-        accessToken
+        accessToken,
+        role: this.role
       });
 
       if (!account) {
