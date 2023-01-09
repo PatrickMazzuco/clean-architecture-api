@@ -31,6 +31,13 @@ export class HttpResponseFactory {
     };
   }
 
+  static ForbiddenError(error: Error): HttpResponse {
+    return {
+      statusCode: 403,
+      body: error
+    };
+  }
+
   static InternalServerError(error: Error): HttpResponse {
     return {
       statusCode: 500,
