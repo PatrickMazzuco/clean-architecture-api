@@ -7,7 +7,8 @@ import { IDecrypter } from '@/application/protocols/cryptography/decrypter.servi
 import { IFindAccountByIdRepository } from '@/application/protocols/db/account/find-account-by-id.repository';
 
 const mockData = (): IFindAccountByToken.Params => ({
-  accessToken: 'any_token'
+  accessToken: 'any_token',
+  role: AccountRole.USER
 });
 
 const mockAccount = (): IFindAccountByIdRepository.Result => ({
@@ -104,6 +105,20 @@ describe('FindAccountByToken Usecase', () => {
       .mockResolvedValueOnce(null);
 
     const result = await sut.execute(mockData());
+    expect(result).toBeNull();
+  });
+
+  it("should null if roles don't match", async () => {
+    const { sut, findAccountByIdRepositoryStub } = makeSut();
+    const account = mockAccount();
+    const data = mockData();
+    data.role = AccountRole.ADMIN;
+
+    jest
+      .spyOn(findAccountByIdRepositoryStub, 'findById')
+      .mockResolvedValueOnce(account);
+
+    const result = await sut.execute(data);
     expect(result).toBeNull();
   });
 

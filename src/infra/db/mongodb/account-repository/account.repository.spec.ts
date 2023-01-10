@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { MongoHelper } from '../helpers/mongodb.helper';
-import { AccountMongo, AccountRoleMongo } from '../models/account.model';
+import { AccountMongo } from '../models/account.model';
 import { AccountMongoRepository } from './account.repository';
+import { AccountRole } from '@/domain/entities';
 
 describe('Account Mongo Repository', () => {
   beforeAll(async () => {
@@ -27,7 +28,7 @@ describe('Account Mongo Repository', () => {
       name: 'any_name',
       email: 'any_email@email.com',
       password: 'any_password',
-      role: 'user' as AccountRoleMongo
+      role: AccountRole.USER
     };
 
     const account = await sut.add(accountData);

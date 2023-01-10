@@ -1,9 +1,7 @@
-export const AccountRole = {
-  ADMIN: 'admin',
-  USER: 'user'
-} as const;
-
-export type AccountRole = typeof AccountRole[keyof typeof AccountRole];
+export enum AccountRole {
+  ADMIN = 'admin',
+  USER = 'user'
+}
 
 export type Account = {
   id: string;

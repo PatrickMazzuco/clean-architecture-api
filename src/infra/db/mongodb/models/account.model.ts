@@ -1,12 +1,9 @@
 import { Document, WithId } from 'mongodb';
 
-export const AccountRoleMongo = {
-  ADMIN: 'admin',
-  USER: 'user'
-} as const;
-
-export type AccountRoleMongo =
-  typeof AccountRoleMongo[keyof typeof AccountRoleMongo];
+export enum AccountRoleMongo {
+  ADMIN = 'admin',
+  USER = 'user'
+}
 
 export type AccountMongo = {
   name: string;

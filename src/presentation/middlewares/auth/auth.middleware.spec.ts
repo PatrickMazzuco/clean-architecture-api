@@ -7,6 +7,7 @@ import {
   AccessDeniedError
 } from './auth-middleware.protocols';
 import { AuthMiddleware } from './auth.middleware';
+import { AccountRole } from '@/domain/entities';
 
 const mockHttpRequest = (): HttpRequest => ({
   headers: {
@@ -19,7 +20,7 @@ const mockAccount = (): IFindAccountByToken.Result => ({
   name: 'valid_name',
   email: 'valid_email@email.com',
   password: 'hashed_password',
-  role: 'user'
+  role: AccountRole.USER
 });
 
 const makeFindAccountByTokenStub = (): IFindAccountByToken => {

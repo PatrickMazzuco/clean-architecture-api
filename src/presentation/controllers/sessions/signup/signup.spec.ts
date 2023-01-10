@@ -6,7 +6,7 @@ import {
   HttpRequest,
   IValidator
 } from './signup.protocols';
-import { Account } from '@/domain/entities';
+import { Account, AccountRole } from '@/domain/entities';
 import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 
 const mockAccount = (): Account => ({
@@ -14,7 +14,7 @@ const mockAccount = (): Account => ({
   name: 'valid_name',
   email: 'any_name@email.com',
   password: 'valid_password',
-  role: 'user'
+  role: AccountRole.USER
 });
 
 const mockHttpRequest = (): HttpRequest => {

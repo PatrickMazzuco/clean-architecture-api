@@ -10,6 +10,7 @@ const config: Config = {
     '!<rootDir>/src/**/protocols/**',
     '!<rootDir>/src/**/*.protocols.ts',
     '!<rootDir>/src/domain/usecases/**/*.ts',
+    '!<rootDir>/src/**/*.mapper.ts',
     '!<rootDir>/src/main/**'
   ],
   coverageDirectory: 'coverage',

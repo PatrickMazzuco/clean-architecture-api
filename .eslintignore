@@ -4,3 +4,4 @@ dist
 .husky
 coverage
 .pnpm-store
+jest.config.ts

@@ -22,7 +22,12 @@ export class AccountMongoRepository
     const result = await accountCollection.insertOne(accountData);
     const id = result.insertedId;
 
-    return AccountMapper.toEntity({ _id: id, ...accountData });
+    const parsedAccountData = AccountMapper.toDatabase({
+      id: id.toString(),
+      ...accountData
+    });
+
+    return AccountMapper.toEntity(parsedAccountData);
   }
 
   async findByEmail(
