@@ -13,7 +13,8 @@ const mockAccount = (): Account => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'any_name@email.com',
-  password: 'valid_password'
+  password: 'valid_password',
+  role: 'user'
 });
 
 const mockHttpRequest = (): HttpRequest => {

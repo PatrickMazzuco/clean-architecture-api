@@ -1,4 +1,7 @@
-import { IFindAccountByToken } from './find-account-by-token.protocols';
+import {
+  AccountRole,
+  IFindAccountByToken
+} from './find-account-by-token.protocols';
 import { FindAccountByTokenUseCase } from './find-account-by-token.usecase';
 import { IDecrypter } from '@/application/protocols/cryptography/decrypter.service';
 import { IFindAccountByIdRepository } from '@/application/protocols/db/account/find-account-by-id.repository';
@@ -11,7 +14,8 @@ const mockAccount = (): IFindAccountByIdRepository.Result => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@email.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  role: AccountRole.USER
 });
 
 const makeDecrypterStub = (): IDecrypter => {
@@ -56,7 +60,7 @@ const makeSut = (): SutTypes => {
   };
 };
 
-describe('Auth Middleware', () => {
+describe('FindAccountByToken Usecase', () => {
   it('should call Decrypter with correct accessToken', async () => {
     const { sut, decrypterStub } = makeSut();
     const data = mockData();

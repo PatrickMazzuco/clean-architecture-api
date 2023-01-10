@@ -4,7 +4,8 @@ import {
   IFindAccountByEmailRepository,
   IHashCompare,
   IEncrypter,
-  IUpdateAccessTokenRepository
+  IUpdateAccessTokenRepository,
+  AccountRole
 } from './authentication.protocols';
 import { AuthenticationUseCase } from './authentication.usecase';
 
@@ -12,7 +13,8 @@ const mockAccount = (): Account => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@email.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  role: AccountRole.USER
 });
 
 const mockAuthData = (): IAuthentication.Params => {

@@ -11,7 +11,8 @@ export class FindAccountByTokenUseCase implements IFindAccountByToken {
   ) {}
 
   async execute({
-    accessToken
+    accessToken,
+    role
   }: IFindAccountByToken.Params): Promise<IFindAccountByToken.Result> {
     const tokenData = await this.decrypter.decrypt(accessToken);
 
@@ -19,6 +20,16 @@ export class FindAccountByTokenUseCase implements IFindAccountByToken {
       return null;
     }
 
-    return await this.findAccountByIdRepository.findById(tokenData.id);
+    const account = await this.findAccountByIdRepository.findById(tokenData.id);
+
+    if (!account) {
+      return null;
+    }
+
+    if (role && account.role !== role) {
+      return null;
+    }
+
+    return account;
   }
 }

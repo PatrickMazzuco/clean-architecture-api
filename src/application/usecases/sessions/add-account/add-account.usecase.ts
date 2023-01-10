@@ -2,7 +2,8 @@ import {
   IAddAccount,
   IAddAccountRepository,
   IFindAccountByEmailRepository,
-  IHasher
+  IHasher,
+  AccountRole
 } from './add-account.protocols';
 
 export class AddAccountUsecase implements IAddAccount {
@@ -30,7 +31,8 @@ export class AddAccountUsecase implements IAddAccount {
     return await this.addAccountRepository.add({
       name,
       email,
-      password: hashedPassword
+      password: hashedPassword,
+      role: AccountRole.USER
     });
   }
 }

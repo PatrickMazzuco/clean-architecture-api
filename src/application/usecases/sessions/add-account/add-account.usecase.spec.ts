@@ -1,5 +1,6 @@
 import {
   Account,
+  AccountRole,
   IAddAccount,
   IAddAccountRepository,
   IFindAccountByEmailRepository,
@@ -22,7 +23,8 @@ const mockAccount = (): Account => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@email.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  role: AccountRole.USER
 });
 
 const mockAccountData = (): IAddAccount.Params => {
@@ -44,7 +46,8 @@ const makeAddAccountRepository = (): IAddAccountRepository => {
         id: 'any_id',
         name: accountData.name,
         email: accountData.email,
-        password: 'hashed_password'
+        password: 'hashed_password',
+        role: AccountRole.USER
       };
 
       return await new Promise((resolve) => resolve(fakeAccount));
@@ -123,7 +126,8 @@ describe('AddAccount Usecase', () => {
     expect(addAccountSpy).toBeCalledWith({
       name: accountData.name,
       email: accountData.email,
-      password: 'hashed_password'
+      password: 'hashed_password',
+      role: AccountRole.USER
     });
   });
 

@@ -18,7 +18,8 @@ const mockAccount = (): IFindAccountByToken.Result => ({
   id: 'valid_id',
   name: 'valid_name',
   email: 'valid_email@email.com',
-  password: 'hashed_password'
+  password: 'hashed_password',
+  role: 'user'
 });
 
 const makeFindAccountByTokenStub = (): IFindAccountByToken => {

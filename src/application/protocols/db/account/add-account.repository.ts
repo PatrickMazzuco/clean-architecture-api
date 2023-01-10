@@ -1,9 +1,10 @@
-import { Account } from '@/domain/entities';
+import { Account, AccountRole } from '@/domain/entities';
 
 type Input = {
   name: string;
   email: string;
   password: string;
+  role: AccountRole;
 };
 
 type Output = Account;

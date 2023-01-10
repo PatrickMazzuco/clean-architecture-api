@@ -10,7 +10,8 @@ export class AccountMapper {
       name: data.name,
       email: data.email,
       password: data.password,
-      accessToken: data.accessToken
+      accessToken: data.accessToken,
+      role: data.role
     };
   }
 
@@ -20,7 +21,8 @@ export class AccountMapper {
       name: data.name,
       email: data.email,
       password: data.password,
-      accessToken: data.accessToken
+      accessToken: data.accessToken,
+      role: data.role
     };
   }
 }

@@ -31,6 +31,7 @@ module.exports = {
     '@typescript-eslint/no-misused-promises': 0,
     '@typescript-eslint/no-invalid-void-type': 0,
     'import/no-named-as-default-member': 0,
+    '@typescript-eslint/no-redeclare': 0,
     'import/extensions': [
       'error',
       'ignorePackages',
