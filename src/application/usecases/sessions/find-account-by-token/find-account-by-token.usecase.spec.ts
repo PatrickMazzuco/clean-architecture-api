@@ -134,9 +134,18 @@ describe('FindAccountByToken Usecase', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it('should return an account on success', async () => {
+  it('should return an account on success with role', async () => {
     const { sut } = makeSut();
     const result = await sut.execute(mockData());
+    expect(result).toEqual(mockAccount());
+  });
+
+  it('should return an account on success without role', async () => {
+    const { sut } = makeSut();
+    const data = mockData();
+    delete data.role;
+
+    const result = await sut.execute(data);
     expect(result).toEqual(mockAccount());
   });
 });
