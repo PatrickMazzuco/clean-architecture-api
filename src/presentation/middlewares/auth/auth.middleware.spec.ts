@@ -11,7 +11,7 @@ import { AccountRole } from '@/domain/entities';
 
 const mockHttpRequest = (): HttpRequest => ({
   headers: {
-    Authorization: 'any_token'
+    authorization: 'any_token'
   }
 });
 
@@ -53,7 +53,7 @@ const makeSut = (role: string = 'role'): SutTypes => {
 };
 
 describe('Auth Middleware', () => {
-  it('should return 403 if no Authorization header is found', async () => {
+  it('should return 403 if no authorization header is found', async () => {
     const { sut } = makeSut();
     const httpRequest: HttpRequest = {
       headers: {}
@@ -72,7 +72,7 @@ describe('Auth Middleware', () => {
     const decryptSpy = jest.spyOn(findAccountByToken, 'execute');
     await sut.handle(httpRequest);
     expect(decryptSpy).toHaveBeenCalledWith({
-      accessToken: httpRequest.headers.Authorization,
+      accessToken: httpRequest.headers.authorization,
       role: 'role'
     });
   });

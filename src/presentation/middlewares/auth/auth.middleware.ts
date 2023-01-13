@@ -27,7 +27,7 @@ export class AuthMiddleware implements IMiddleware {
 
   async handle(request: HttpRequest): Promise<HttpResponse> {
     try {
-      const accessToken = request.headers.Authorization;
+      const accessToken = request.headers.authorization;
 
       if (!accessToken) {
         return HttpResponseFactory.ForbiddenError(new AccessDeniedError());
