@@ -100,7 +100,12 @@ describe('AddSurvey Controller', () => {
     const validatorSpy = jest.spyOn(addSurveyStub, 'add');
     await sut.handle(httpRequest);
 
-    expect(validatorSpy).toBeCalledWith(httpRequest.body);
+    expect(validatorSpy).toBeCalledWith(
+      expect.objectContaining({
+        ...httpRequest.body,
+        date: expect.any(Date)
+      })
+    );
   });
 
   it('should return 500 if AddSurvey throws', async () => {

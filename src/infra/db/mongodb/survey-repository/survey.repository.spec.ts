@@ -34,7 +34,8 @@ describe('Survey Mongo Repository', () => {
         {
           answer: 'another_answer'
         }
-      ]
+      ],
+      date: new Date()
     };
 
     await sut.add(surveyData);

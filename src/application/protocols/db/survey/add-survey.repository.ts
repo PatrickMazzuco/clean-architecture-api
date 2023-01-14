@@ -6,6 +6,7 @@ type SurveyAnswer = {
 type Input = {
   question: string;
   answers: SurveyAnswer[];
+  date: Date;
 };
 
 type Output = void;

@@ -5,11 +5,13 @@ export class AddSurveyUsecase implements IAddSurvey {
 
   async add({
     question,
-    answers
+    answers,
+    date
   }: IAddSurvey.Params): Promise<IAddSurvey.Result> {
     await this.addSurveyRepository.add({
       question,
-      answers
+      answers,
+      date
     });
   }
 }

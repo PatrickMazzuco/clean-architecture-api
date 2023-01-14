@@ -8,7 +8,6 @@ export class LogControllerDecorator implements IController {
   ) {}
 
   async handle(httpRequest: IController.Params): Promise<IController.Result> {
-    console.log('LogControllerDecorator: ', httpRequest);
     const httpResponse = await this.controller.handle(httpRequest);
     if (httpResponse.statusCode === 500) {
       await this.logErrorRepository.logError(httpResponse.body.stack);

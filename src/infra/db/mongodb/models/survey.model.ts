@@ -8,4 +8,5 @@ export type SurveyAnswerMongo = {
 export type SurveyMongo = {
   question: string;
   answers: SurveyAnswerMongo[];
+  date: Date;
 } & WithId<Document>;

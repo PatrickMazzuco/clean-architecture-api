@@ -14,7 +14,8 @@ const mockSurvey = (): Survey => ({
       image: 'valid_image',
       answer: 'valid_answer'
     }
-  ]
+  ],
+  date: new Date()
 });
 
 const mockSurveyData = (): IAddSurvey.Params => {
@@ -26,7 +27,8 @@ const mockSurveyData = (): IAddSurvey.Params => {
 
   return {
     question,
-    answers: parsedAnswers
+    answers: parsedAnswers,
+    date: new Date()
   };
 };
 
