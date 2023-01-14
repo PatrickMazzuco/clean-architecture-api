@@ -11,23 +11,8 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "paths": {
-      "@/domain/*": [
-        "src/domain/*"
-      ],
-      "@/application/*": [
-        "src/application/*"
-      ],
-      "@/presentation/*": [
-        "src/presentation/*"
-      ],
-      "@/infra/*": [
-        "src/infra/*"
-      ],
-      "@/main/*": [
-        "src/main/*"
-      ],
-      "@/validation/*": [
-        "src/validation/*"
+      "@/*": [
+        "src/*"
       ]
     }
   },
