@@ -10,7 +10,6 @@ const mockSurvey = (): Survey => ({
   question: 'valid_question',
   answers: [
     {
-      id: 'valid_answer_id',
       image: 'valid_image',
       answer: 'valid_answer'
     }

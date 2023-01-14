@@ -1,5 +1,4 @@
 export type SurveyAnswer = {
-  id: string;
   image?: string;
   answer: string;
 };
