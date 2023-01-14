@@ -22,29 +22,61 @@ describe('Survey Mongo Repository', () => {
     return new SurveyMongoRepository();
   };
 
-  it('should be able to add a new Survey', async () => {
-    const sut = makeSut();
-    const surveyData: IAddSurveyRepository.Params = {
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer'
-        },
-        {
-          answer: 'another_answer'
-        }
-      ],
-      date: new Date()
-    };
+  describe('AddSurvey', () => {
+    it('should be able to add a new Survey', async () => {
+      const sut = makeSut();
+      const surveyData: IAddSurveyRepository.Params = {
+        question: 'any_question',
+        answers: [
+          {
+            image: 'any_image',
+            answer: 'any_answer'
+          },
+          {
+            answer: 'another_answer'
+          }
+        ],
+        date: new Date()
+      };
 
-    await sut.add(surveyData);
-    const surveyCollection = MongoHelper.getCollection('surveys');
-    const survey = await surveyCollection.findOne<SurveyMongo>({
-      question: surveyData.question
+      await sut.add(surveyData);
+      const surveyCollection = MongoHelper.getCollection('surveys');
+      const survey = await surveyCollection.findOne<SurveyMongo>({
+        question: surveyData.question
+      });
+
+      expect(survey).toBeTruthy();
+      expect(survey!.answers).toHaveLength(surveyData.answers.length);
     });
+  });
 
-    expect(survey).toBeTruthy();
-    expect(survey!.answers).toHaveLength(surveyData.answers.length);
+  describe('ListSurveys', () => {
+    it('should be able to list Surveys', async () => {
+      const sut = makeSut();
+      const date = new Date();
+      const surveyData: IAddSurveyRepository.Params = {
+        question: 'any_question',
+        answers: [
+          {
+            image: 'any_image',
+            answer: 'any_answer'
+          },
+          {
+            answer: 'another_answer'
+          }
+        ],
+        date
+      };
+
+      const surveysBeforeInser = await sut.list();
+
+      expect(surveysBeforeInser).toHaveLength(0);
+
+      await sut.add(surveyData);
+      const surveys = await sut.list();
+
+      expect(surveys).toHaveLength(1);
+      expect(surveys[0]).toEqual(expect.objectContaining(surveyData));
+    });
   });
 });
