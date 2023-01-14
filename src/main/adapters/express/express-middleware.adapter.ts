@@ -2,10 +2,14 @@ import { NextFunction, Request, Response } from 'express';
 
 import { IMiddleware, HttpRequest } from '@/presentation/protocols';
 
+export type ExpressMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => Promise<void>;
+
 export class ExpressMiddlewareAdapter {
-  static adapt(
-    middleware: IMiddleware
-  ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
+  static adapt(middleware: IMiddleware): ExpressMiddleware {
     return async (req: Request, res: Response, next: NextFunction) => {
       const httpRequest: HttpRequest = {
         headers: req.headers

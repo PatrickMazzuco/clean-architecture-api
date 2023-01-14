@@ -19,7 +19,7 @@ const mockSurveyCreation = (): any => ({
   ]
 });
 
-const setupUsers = async () => {
+const makeAccessTokens = async () => {
   const adminAccountData = {
     name: 'Admin Name',
     email: 'admin_email@email.com',
@@ -65,8 +65,8 @@ const setupUsers = async () => {
   };
 };
 
-const setupUsersAndSurveys = async () => {
-  const { adminAccessToken, userAccessToken } = await setupUsers();
+const makeAccessTokensAndUsers = async () => {
+  const { adminAccessToken, userAccessToken } = await makeAccessTokens();
 
   const surveyData = mockSurveyCreation();
   await request(app)
@@ -110,7 +110,7 @@ describe('Surveys Routes', () => {
     });
 
     it('should return 403 when sending a token from an invalid role', async () => {
-      const { userAccessToken } = await setupUsers();
+      const { userAccessToken } = await makeAccessTokens();
 
       const surveyData = mockSurveyCreation();
       await request(app)
@@ -121,7 +121,7 @@ describe('Surveys Routes', () => {
     });
 
     it('should return 204 when sending a valid accessToken', async () => {
-      const { adminAccessToken } = await setupUsers();
+      const { adminAccessToken } = await makeAccessTokens();
 
       const surveyData = mockSurveyCreation();
       await request(app)
@@ -146,7 +146,7 @@ describe('Surveys Routes', () => {
     });
 
     it('should return 200 on success when sending a normal user accessToken', async () => {
-      const { userAccessToken, surveyId } = await setupUsersAndSurveys();
+      const { userAccessToken, surveyId } = await makeAccessTokensAndUsers();
 
       const listSurveysResponse = await request(app)
         .get('/api/surveys')
@@ -160,7 +160,7 @@ describe('Surveys Routes', () => {
     });
 
     it('should return 200 on success when sending an admin accessToken', async () => {
-      const { adminAccessToken, surveyId } = await setupUsersAndSurveys();
+      const { adminAccessToken, surveyId } = await makeAccessTokensAndUsers();
 
       const listSurveysResponse = await request(app)
         .get('/api/surveys')
