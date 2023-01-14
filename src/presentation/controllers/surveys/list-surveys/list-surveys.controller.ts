@@ -16,7 +16,11 @@ export class ListSurveysController implements IController {
   }
 
   async handle(request: IController.Params): Promise<IController.Result> {
-    await this.listSurveys.list();
-    return HttpResponseFactory.NoContent();
+    try {
+      const surveys = await this.listSurveys.list();
+      return HttpResponseFactory.Ok(surveys);
+    } catch (error) {
+      return HttpResponseFactory.InternalServerError(error as Error);
+    }
   }
 }
