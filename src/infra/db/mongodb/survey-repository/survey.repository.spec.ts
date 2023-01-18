@@ -79,4 +79,44 @@ describe('Survey Mongo Repository', () => {
       expect(surveys[0]).toEqual(expect.objectContaining(surveyData));
     });
   });
+
+  describe('FindSurveyById', () => {
+    it('should be able find a Survey by id', async () => {
+      const sut = makeSut();
+      const date = new Date();
+      const surveyData: IAddSurveyRepository.Params = {
+        question: 'any_question',
+        options: [
+          {
+            image: 'any_image',
+            option: 'any_option'
+          },
+          {
+            option: 'another_option'
+          }
+        ],
+        date
+      };
+
+      const surveyCollection = MongoHelper.getCollection('surveys');
+      const surveyInsertResult = await surveyCollection.insertOne({
+        ...surveyData
+      });
+
+      const survey = await sut.findById(
+        surveyInsertResult.insertedId.toString()
+      );
+
+      expect(survey).toEqual(expect.objectContaining(surveyData));
+    });
+  });
+
+  it('should return null when no Survey is found', async () => {
+    const sut = makeSut();
+    const mockId = '5f9f1c9c9c9c9c9c9c9c9c9c';
+
+    const survey = await sut.findById(mockId);
+
+    expect(survey).toBeNull();
+  });
 });
