@@ -1,14 +1,16 @@
 import { SurveyAnswer } from '@/domain/entities';
 
-type Input = Omit<SurveyAnswer, 'id' | 'date'>;
+type AddSurveyAnswerParams = Omit<SurveyAnswer, 'id' | 'date'>;
 
-type Output = void;
+type AddSurveyAnswerResult = SurveyAnswer;
 
 export namespace IAddSurveyAnswer {
-  export type Params = Input;
-  export type Result = Output;
+  export type Params = AddSurveyAnswerParams;
+  export type Result = AddSurveyAnswerResult;
 }
 
 export interface IAddSurveyAnswer {
-  add: (params: IAddSurveyAnswer.Params) => Promise<IAddSurveyAnswer.Result>;
+  execute: (
+    params: IAddSurveyAnswer.Params
+  ) => Promise<IAddSurveyAnswer.Result>;
 }
