@@ -8,13 +8,13 @@ import { SurveyMongo } from '@/infra/db/mongodb/models/survey.model';
 
 const mockSurveyCreation = (): any => ({
   question: 'Question',
-  answers: [
+  options: [
     {
-      answer: 'Answer 1',
+      option: 'Option 1',
       image: 'http://image-name.com'
     },
     {
-      answer: 'Answer 2'
+      option: 'Option 2'
     }
   ]
 });
@@ -136,7 +136,7 @@ describe('Surveys Routes', () => {
       });
 
       expect(survey).toBeTruthy();
-      expect(survey!.answers).toHaveLength(surveyData.answers.length);
+      expect(survey!.options).toHaveLength(surveyData.options.length);
     });
   });
 

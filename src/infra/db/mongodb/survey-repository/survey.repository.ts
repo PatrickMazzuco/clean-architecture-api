@@ -9,13 +9,13 @@ export class SurveyMongoRepository
 {
   async add({
     question,
-    answers,
+    options,
     date
   }: IAddSurveyRepository.Params): Promise<IAddSurveyRepository.Result> {
     const collection = MongoHelper.getCollection('surveys');
     await collection.insertOne({
       question,
-      answers,
+      options,
       date
     });
   }

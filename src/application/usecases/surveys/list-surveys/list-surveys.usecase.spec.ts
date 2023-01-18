@@ -6,13 +6,13 @@ const mockSurveys = (): IListSurveys.Result => [
     id: 'any_id',
     question: 'any_question',
     date: new Date(),
-    answers: [
+    options: [
       {
-        answer: 'Answer 1',
+        option: 'Option 1',
         image: 'any_image'
       },
       {
-        answer: 'Answer 2',
+        option: 'Option 2',
         image: 'any_image'
       }
     ]
@@ -21,13 +21,13 @@ const mockSurveys = (): IListSurveys.Result => [
     id: 'another_id',
     question: 'another_question',
     date: new Date(),
-    answers: [
+    options: [
       {
-        answer: 'Answer 1',
+        option: 'Option 1',
         image: 'any_image'
       },
       {
-        answer: 'Answer 2',
+        option: 'Option 2',
         image: 'any_image'
       }
     ]

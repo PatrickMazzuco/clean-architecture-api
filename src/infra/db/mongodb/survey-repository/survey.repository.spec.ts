@@ -27,13 +27,13 @@ describe('Survey Mongo Repository', () => {
       const sut = makeSut();
       const surveyData: IAddSurveyRepository.Params = {
         question: 'any_question',
-        answers: [
+        options: [
           {
             image: 'any_image',
-            answer: 'any_answer'
+            option: 'any_option'
           },
           {
-            answer: 'another_answer'
+            option: 'another_option'
           }
         ],
         date: new Date()
@@ -46,7 +46,7 @@ describe('Survey Mongo Repository', () => {
       });
 
       expect(survey).toBeTruthy();
-      expect(survey!.answers).toHaveLength(surveyData.answers.length);
+      expect(survey!.options).toHaveLength(surveyData.options.length);
     });
   });
 
@@ -56,13 +56,13 @@ describe('Survey Mongo Repository', () => {
       const date = new Date();
       const surveyData: IAddSurveyRepository.Params = {
         question: 'any_question',
-        answers: [
+        options: [
           {
             image: 'any_image',
-            answer: 'any_answer'
+            option: 'any_option'
           },
           {
-            answer: 'another_answer'
+            option: 'another_option'
           }
         ],
         date

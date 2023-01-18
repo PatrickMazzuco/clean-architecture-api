@@ -6,10 +6,10 @@ import { HttpResponseFactory } from '@/presentation/helpers/http/http.helper';
 const mockHttpRequest = (): HttpRequest => ({
   body: {
     question: 'any_question',
-    answers: [
+    options: [
       {
         image: 'any_image',
-        answer: 'any_answer'
+        option: 'any_option'
       }
     ]
   }

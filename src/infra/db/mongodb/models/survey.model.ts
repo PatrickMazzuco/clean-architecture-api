@@ -1,12 +1,12 @@
 import { Document, WithId } from 'mongodb';
 
-export type SurveyAnswerMongo = {
+export type SurveyOptionMongo = {
   image?: string;
-  answer: string;
+  option: string;
 };
 
 export type SurveyMongo = {
   question: string;
-  answers: SurveyAnswerMongo[];
+  options: SurveyOptionMongo[];
   date: Date;
 } & WithId<Document>;

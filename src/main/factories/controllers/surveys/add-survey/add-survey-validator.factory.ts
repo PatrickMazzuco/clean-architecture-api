@@ -5,9 +5,9 @@ import {
   RequiredFieldValidator
 } from '@/validation/validators';
 
-type RequiredFields = Array<keyof Pick<Survey, 'question' | 'answers'>>;
+type RequiredFields = Array<keyof Pick<Survey, 'question' | 'options'>>;
 
-export const addSurveyRequiredFields: RequiredFields = ['question', 'answers'];
+export const addSurveyRequiredFields: RequiredFields = ['question', 'options'];
 
 export const makeAddSurveyValidator = (): IValidator => {
   const validators: IValidator[] = [];

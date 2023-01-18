@@ -1,11 +1,11 @@
-export type SurveyAnswer = {
+export type SurveyOption = {
   image?: string;
-  answer: string;
+  option: string;
 };
 
 export type Survey = {
   id: string;
   question: string;
-  answers: SurveyAnswer[];
+  options: SurveyOption[];
   date: Date;
 };

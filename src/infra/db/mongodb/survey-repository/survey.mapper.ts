@@ -2,11 +2,11 @@ import { SurveyMongo } from '../models/survey.model';
 import { Survey } from '@/domain/entities';
 
 export class SurveyMapper {
-  static toEntity({ _id, question, answers, date }: SurveyMongo): Survey {
+  static toEntity({ _id, question, options, date }: SurveyMongo): Survey {
     return {
       id: _id.toString(),
       question,
-      answers,
+      options,
       date
     };
   }

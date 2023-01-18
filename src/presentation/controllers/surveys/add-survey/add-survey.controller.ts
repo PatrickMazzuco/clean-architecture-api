@@ -14,10 +14,10 @@ export class AddSurveyController implements IController {
         return HttpResponseFactory.BadRequestError(error);
       }
 
-      const { question, answers } = request.body;
+      const { question, options } = request.body;
       await this.addSurvey.add({
         question,
-        answers,
+        options,
         date: new Date()
       });
 

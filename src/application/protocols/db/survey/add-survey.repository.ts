@@ -1,11 +1,11 @@
-type SurveyAnswer = {
+type SurveyOption = {
   image?: string;
-  answer: string;
+  option: string;
 };
 
 type Input = {
   question: string;
-  answers: SurveyAnswer[];
+  options: SurveyOption[];
   date: Date;
 };
 

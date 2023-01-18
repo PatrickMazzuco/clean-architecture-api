@@ -8,25 +8,25 @@ import { AddSurveyUsecase } from './add-survey.usecase';
 const mockSurvey = (): Survey => ({
   id: 'valid_survey_id',
   question: 'valid_question',
-  answers: [
+  options: [
     {
       image: 'valid_image',
-      answer: 'valid_answer'
+      option: 'valid_option'
     }
   ],
   date: new Date()
 });
 
 const mockSurveyData = (): IAddSurvey.Params => {
-  const { question, answers } = mockSurvey();
-  const parsedAnswers = answers.map((answer) => ({
-    image: answer.image,
-    answer: answer.answer
+  const { question, options } = mockSurvey();
+  const parsedOptions = options.map((option) => ({
+    image: option.image,
+    option: option.option
   }));
 
   return {
     question,
-    answers: parsedAnswers,
+    options: parsedOptions,
     date: new Date()
   };
 };
