@@ -38,6 +38,13 @@ export class HttpResponseFactory {
     };
   }
 
+  static NotFoundError(): HttpResponse {
+    return {
+      statusCode: 404,
+      body: null
+    };
+  }
+
   static InternalServerError(error: Error): HttpResponse {
     return {
       statusCode: 500,
